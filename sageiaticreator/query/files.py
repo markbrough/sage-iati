@@ -1,5 +1,5 @@
 from sageiaticreator import db, models
-from sageiaticreator import organisation as siorganisation
+import organisation as siorganisation
 import normality
 import datetime, time
 
