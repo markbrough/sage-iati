@@ -132,7 +132,7 @@ def get_sheet_data(organisation_slug, file):
     num_rows = sheet.nrows
     
     date_exported = sheet.cell_value(0, 2)
-    print "Date exported", date_exported
+    #FIXME does the date exported value need to be used?
     
     account_number = None
     
@@ -171,7 +171,6 @@ def get_sheet_data(organisation_slug, file):
         if cv == "N/C:":
             account_number = sheet.cell_value(row_number, 2)
             account_description =  sheet.cell_value(row_number, 6)
-            print account_number, account_description
             continue
             
         # Ignore header rows and blank rows
@@ -191,7 +190,6 @@ def get_sheet_data(organisation_slug, file):
                            aggregated_account_numbers[account_number],
                            sheet, row_number, dr)
                            
-    print transactional_data
     return transactional_data
 
 def parse_transactions(organisation_slug, file):
