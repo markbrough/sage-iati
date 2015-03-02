@@ -80,77 +80,87 @@
       </table>
     </div>
     <div role="tabpanel" class="tab-pane" id="generate">
-      <h3>Converted files</h3>
-      <table class="table">
-        <thead>
-          <th>File type</th>
-          <th>Generation date</th>
-          <th>View</th>
-        </thead>
-        <tbody>
-          {% for file in converted_files %}
-          <tr>
-            <td>{{ file.file_type.name }}</td>
-            <td>{{ file.file_generated_date }}</td>
-            <td><a href="{{ url_for('get_file', 
-              organisation_slug=organisation.organisation_slug, 
-              file_id=file.id) }}">
-              <span class="glyphicon glyphicon-eye-open"></span>
-            </a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-
-      <div class="col-sm-6">
-        <h3>Generate new activity file</h3>
-        <h4>Upload new transactional data</h4>
-        <div class="alert alert-info">
-          <b>Instructions for extracting data from Sage</b>
-          <ol>
-            <li>Select Company tab from bottom left</li>
-            <li>Reports button</li>
-            <li>Report range:</li>
-            <ul>
-              <li>Accounts: from 4000</li>
-              <li>Report type: Nominal Activity - Nominal Activity</li>
-              <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
-                Jan)</li>
-            </ul>
-            <li>Export to Excel 2007</li>
-          </ol>
+      <div class="row">
+        <div class="col-sm-6">
+          <h3>Generate new activity file</h3>
+          <h4>Upload new transactional data</h4>
+          <div class="alert alert-info">
+            <b>Instructions for extracting data from Sage</b>
+            <ol>
+              <li>Select Company tab from bottom left</li>
+              <li>Reports button</li>
+              <li>Report range:</li>
+              <ul>
+                <li>Accounts: from 4000</li>
+                <li>Report type: Nominal Activity - Nominal Activity</li>
+                <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
+                  Jan)</li>
+              </ul>
+              <li>Export to Excel 2007</li>
+            </ol>
+          </div>
+          <form class="form-horizontal" method="post" action="{{
+              url_for('transactions_preview',
+              organisation_slug = organisation.organisation_slug)
+            }}" enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="transactions_file" class="col-sm-2 control-label">
+                Transactions</label>
+              <div class="col-sm-10">
+                <input type="file" id="transactions-file" name="transactions-file">
+                <p class="help-block">Select file containing transactional data.</p>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Upload</button>
+              </div>
+            </div>
+          </form>
         </div>
-        <form class="form-horizontal" method="post" action="{{
-            url_for('transactions_preview',
-            organisation_slug = organisation.organisation_slug)
-          }}" enctype="multipart/form-data">
-          <div class="form-group">
-            <label for="transactions_file" class="col-sm-2 control-label">
-              Transactions</label>
-            <div class="col-sm-10">
-              <input type="file" id="transactions-file" name="transactions-file">
-              <p class="help-block">Select file containing transactional data.</p>
+        <div class="col-sm-6">
+          <h3>Generate new organisation file</h3>
+          <form class="form-horizontal" method="post" action="{{
+              url_for('orgfile_generate',
+              organisation_slug = organisation.organisation_slug)
+            }}">
+            <div class="form-group">
+              <div class="col-sm-10">
+                <button type="submit" class="btn btn-default">Generate</button>
+              </div>
             </div>
-          </div>
-          <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <button type="submit" class="btn btn-default">Upload</button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
-      <div class="col-sm-6">
-        <h3>Generate new organisation file</h3>
-        <form class="form-horizontal" method="post" action="{{
-            url_for('orgfile_generate',
-            organisation_slug = organisation.organisation_slug)
-          }}">
-          <div class="form-group">
-            <div class="col-sm-10">
-              <button type="submit" class="btn btn-default">Generate</button>
-            </div>
-          </div>
-        </form>
+      <div class="row">
+        <h3>Converted files</h3>
+        <table class="table">
+          <thead>
+            <th>File type</th>
+            <th>Generation date</th>
+            <th>View</th>
+            <th>Validate</th>
+          </thead>
+          <tbody>
+            {% for file in converted_files %}
+            <tr>
+              <td>{{ file.file_type.name }}</td>
+              <td>{{ file.file_generated_date }}</td>
+              <td><a href="{{ url_for('get_file', 
+                organisation_slug=organisation.organisation_slug, 
+                file_id=file.id) }}">
+                <span class="glyphicon glyphicon-eye-open"></span> View
+              </a></td>
+              <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file', 
+                organisation_slug=organisation.organisation_slug, 
+                file_id=file.id,
+                _external=True) }}">
+                <span class="glyphicon glyphicon-ok"></span> Validate
+              </a></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
