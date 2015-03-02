@@ -184,7 +184,7 @@ def build_period(el_i, period):
     
 def build_indicator(el_result, indicator):
     i = indicator.as_dict()
-    el_i = et.Element("indicator")
+    el_i = el_with_attrib("indicator", "measure", "1")
     el_result.append(el_i)
     if i.get('indicator_title'):
         el_i.append(el_with_narrative("title", i['indicator_title']))
