@@ -1,6 +1,6 @@
 from sageiaticreator import app, db, models
-from sageiaticreator import organisation as siorganisation
-from sageiaticreator import activity as siactivity
+import organisation as siorganisation
+import activity as siactivity
 import xlrd
 import normality
 import datetime, time
