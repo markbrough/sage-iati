@@ -1,0 +1,94 @@
+{% set active_page='dashboard' %}{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+
+<style>
+.aggregated-details {
+  display:none;
+}
+</style>
+
+<form action="generate_iati_data/" method="post">
+<div class="pull-right">
+  <p>
+    <button class="btn btn-success" type="submit">
+      <span class="glyphicon glyphicon-flash"></span> Generate IATI data
+    </button>
+  </p>
+  <p>
+    <a class="btn btn-warning" href="" id="btn-reveal-aggregated-details"
+    data-toggle="show">
+      <span class="glyphicon glyphicon-eye-open"></span> Show details of aggregated transactions
+    </a>
+  </p>
+</div>
+<h1>Import transactions for {{ organisation.organisation_name }}</h1>
+
+{% for activity_code, activity_data in transactions['activities'].items() %}
+<script >
+  $(function() {
+    $("table#transactions-{{ activity_data.code }}").tablesorter({ sortList: [[1,0], [3,1]] });
+  });
+</script>
+<h3>Activity {{ activity_data.code }}: {{ activity_data.title }}</h3>
+<dl class="dl-horizontal">
+  <dt>Code</dt>
+  <dd>{{ activity_data.code }}</dd>
+  <dt>Description</dt>
+  <dd>{{ activity_data.description }}</dd>
+  <dt>Start date</dt>
+  <dd>{{ activity_data.start_date }}</dd>
+  <dt>End date</dt>
+  <dd>{{ activity_data.end_date }}</dd>
+</dl>
+<h4>Transactions</h4>
+<table class="table" id="transactions-{{ activity_data.code }}">
+  <thead>
+    <th>Transaction ID</th>
+    <th>Sector code</th>
+    <th>Sector name</th>
+    <th>Date</th>
+    <th>Description</th>
+    <th>Value</th>
+    <th>Transaction type</th>
+    <th>Department</th>
+  </thead>
+  <tbody>
+    {% for account_number, account_data in activity_data['accounts'].items() %}
+    {% for transaction_date, transaction in account_data['aggregated_values'].items() %}
+    <tr {% if account_data['aggregation'] == True %}class="warning"{% endif %}>
+      <td>{{ transaction.transaction_id }}</td>
+      <td>{{ transaction.sector_code }}</td>
+      <td>{{ transaction.sector_name }}</td>
+      <td>{{ transaction.date }}</td>
+      <td>{{ transaction.description }}</td>
+      <td>{{ transaction.value }}</td>
+      <td>{{ transaction.transaction_type }}</td>
+      <td>{{ transaction.department }}</td>
+    </tr>
+    {% endfor %}
+    {% for transaction in account_data['disaggregated_values'] %}
+    <tr {% if account_data['aggregation'] == True %}class="info aggregated-details"{% endif %}>
+      <td>{{ transaction.transaction_id }}</td>
+      <td>{{ transaction.sector_code }}</td>
+      <td>{{ transaction.sector_name }}</td>
+      <td>{{ transaction.date }}</td>
+      <td{% if transaction.redacted %}
+          title="{{ transaction.description_unredacted }}"{% endif %}>
+          {{ transaction.description }}</td>
+      <td>{{ transaction.value }}</td>
+      <td>{{ transaction.transaction_type }}</td>
+      <td>{{ transaction.department }}</td>
+    </tr>
+    {% endfor %}
+    {% endfor %}
+  </tbody>
+</table>
+{% endfor %}
+
+<input type="hidden" name="jsondata" value="{{jsondata}}">
+</form>
+
+<script src="{{url_for('static', filename='js/transactions_preview.js')}}" type="text/javascript"></script>
+
+{% endblock %}

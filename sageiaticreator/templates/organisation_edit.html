@@ -1,0 +1,398 @@
+{% set active_page='organisation' %}{% extends "layout.html" %}
+{% block title %}Edit organisation{% endblock %}
+{% block content %}
+<style>
+  .table span.form-control-feedback {
+    top: 0;
+  }
+</style>
+<h1>Edit {{ organisation.organisation_name }}</h1>
+<div role="tabpanel">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a></li>
+    <li role="presentation"><a href="#budgets" aria-controls="budgets" role="tab" data-toggle="tab">Budgets</a></li>
+    <li role="presentation"><a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">Documents</a></li>
+    <li role="presentation"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding orgs</a></li>
+    <li role="presentation"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="basic">
+      <h2>Basic information</h2>
+      <form class="form-horizontal" id="org-data-form">
+        <div class="form-group">
+          <label for="organisation_name" class="col-sm-2 control-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_name" id="organisation_name"
+          value="{{ organisation.organisation_name }}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_ref" class="col-sm-2 control-label">Ref</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_ref" id="organisation_ref"
+          value="{{ organisation.organisation_ref }}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_type" class="col-sm-2 control-label">Type</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_type" id="organisation_type"
+          value="{{ organisation.organisation_type }}" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_default_currency" class="col-sm-2 
+          control-label">Currency</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_default_currency" 
+            id="organisation_default_currency" 
+            value="{{ organisation.organisation_default_currency }}" 
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_name" class="col-sm-2 
+          control-label">Contact name</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_contact_name" 
+            id="organisation_contact_name" 
+            value="{{ organisation.organisation_contact_name }}" 
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_email" class="col-sm-2 
+          control-label">Contact email</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_contact_email" 
+            id="organisation_contact_email" 
+            value="{{ organisation.organisation_contact_email }}" 
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_address" class="col-sm-2 
+          control-label">Contact address</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_contact_address" 
+            id="organisation_contact_address" 
+            value="{{ organisation.organisation_contact_address }}" 
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_phone" class="col-sm-2 
+          control-label">Contact phone number</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_contact_phone" 
+            id="organisation_contact_phone" 
+            value="{{ organisation.organisation_contact_phone }}" 
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_website" class="col-sm-2 
+          control-label">Contact website</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_contact_website" 
+            id="organisation_contact_website" 
+            value="{{ organisation.organisation_contact_website }}" 
+            class="form-control">
+          </div>
+        </div>
+      </form>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="budgets">
+      <h3>Organisation budgets</h3>
+      <form id="org-budget-form">
+        <table class="table">
+          <thead>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Value</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            {% for budget in organisation_budgets %}
+            <tr data-budget-id="{{ budget.id }}">
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="start_date"
+                  value="{{ budget.start_date }}">
+                </div>
+              </td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="end_date"
+                  value="{{ budget.end_date }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="value"
+                  value="{{ budget.value }}">
+                </div></td>
+              <td>
+                <a href="" class="deleteOrgBudgetBtn">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+      <a href="#addBudget" class="btn btn-success addOrgBudgetBtn">
+        <span class="glyphicon glyphicon-plus"></span> <b>Add budget</b>
+      </a>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="docs">
+      <h3>Organisation documents</h3>
+      <form id="org-doc-form">
+        <table class="table">
+          <thead>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Format</th>
+            <th>Category</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            {% for doc in organisation_docs %}
+            <tr data-doc-id="{{ doc.id }}">
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="title"
+                  value="{{ doc.title }}">
+                </div>
+              </td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="url"
+                  value="{{ doc.url }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="format"
+                  value="{{ doc.format }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="category"
+                  value="{{ doc.category }}">
+                </div></td>
+              <td>
+                <a href="" class="deleteOrgDocBtn">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+      <a href="#addDoc" class="btn btn-success addOrgDocBtn">
+        <span class="glyphicon glyphicon-plus"></span> <b>Add document</b>
+      </a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="funding">
+      <h2>Funding</h2>
+      <table class="table" id="funding-orgs-table">
+        <thead>
+          <th>Name</th>
+          <th>Ref</th>
+          <th>Type</th>
+          <th>Delete</th>
+        </thead>
+        <tbody>
+          {% for funder in funders %}
+          <tr data-funder-id="{{ funder.id }}">
+            <td>{{ funder.funding_org_name }}</td>
+            <td>{{ funder.funding_org_ref }}</td>
+            <td>{{ funder.funding_org_type }}</td>
+            <td>
+              <a href="" class="deleteFunderBtn">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="" class="btn btn-success" data-toggle="modal" 
+      data-target="#addFunderModal">
+        <span class="glyphicon glyphicon-plus"></span> <b>Add funder</b>
+      </a>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="privacy">
+      <h3>Privacy settings</h3>
+      <div class="col-sm-6">
+        <h4>Redacted strings from transactions</h4>
+        <table class="table" id="excluded-strings-table">
+          <thead>
+            <th>String</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            {% for excluded_string in excluded_strings %}
+            <tr data-excluded-string-id="{{ excluded_string.id }}">
+              <td>{{ excluded_string.excluded_string }}</td>
+              <td>
+                <a href="" class="deleteExcludedStringBtn">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <a href="" class="btn btn-success" data-toggle="modal" 
+        data-target="#excludedStringModal">
+          <span class="glyphicon glyphicon-plus"></span> <b>Add excluded string</b>
+        </a>
+      </div>
+      <div class="col-sm-6">
+        <h4>Aggregated accounts</h4>
+        <table class="table" id="aggregated-accounts-table">
+          <thead>
+            <th>Account number</th>
+            <th>Description</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            {% for aggregated_account in aggregated_accounts %}
+            <tr data-aggregated-account-id="{{ aggregated_account.id }}">
+              <td>{{ aggregated_account.account_number }}</td>
+              <td>{{ aggregated_account.account_description }}</td>
+              <td>
+                <a href="" class="deleteAggregatedAccountBtn">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+
+        <a href="" class="btn btn-success" data-toggle="modal" 
+        data-target="#aggregateAccountModal">
+          <span class="glyphicon glyphicon-plus"></span> <b>Add aggregate account</b>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Excluded string modal -->
+<div class="modal fade" id="addFunderModal" tabindex="-1" 
+role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add funder</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" id="addFunderForm">
+          <div class="form-group">
+            <label for="funding_org_name" class="col-sm-2 control-label">
+              Name</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="funding_org_name" 
+              name="funding_org_name" placeholder="Name of the funding org">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="funding_org_ref" class="col-sm-2 control-label">
+              Ref</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="funding_org_ref" 
+              name="funding_org_ref" placeholder="Organisation ID">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="funding_org_type" class="col-sm-2 control-label">
+              Type</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="funding_org_type" 
+              name="funding_org_type" placeholder="Organisation Type">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close</button>
+        <button type="button" class="btn btn-success" id="addFunderBtn">
+          Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Aggregate account modal -->
+<div class="modal fade" id="aggregateAccountModal" tabindex="-1" 
+role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add aggregated account</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" id="addAggregateAccountForm">
+          <div class="form-group">
+            <label for="account_number" class="col-sm-2 control-label">
+              Account</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="account_number" 
+              name="account_number" placeholder="Account number to be aggregated">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account_description" class="col-sm-2 control-label">
+              Description</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="account_description" 
+              name="account_description" placeholder="e.g. Aggregated Salary costs">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" id="addAggregateAccountBtn">
+          Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Excluded string modal -->
+<div class="modal fade" id="excludedStringModal" tabindex="-1" 
+role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add excluded string</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" id="addExcludedStringForm">
+          <div class="form-group">
+            <label for="excluded_string" class="col-sm-2 control-label">
+              String</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="excluded_string" 
+              name="excluded_string" placeholder="String to exclude">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close</button>
+        <button type="button" class="btn btn-success" id="addExcludedStringBtn">
+          Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="{{url_for('static', filename='js/organisation_edit.js')}}" type="text/javascript"></script>
+
+{% endblock %}

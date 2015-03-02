@@ -1,0 +1,26 @@
+{% set active_page='dashboard' %}{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Organisations</h1>
+<p>The following organisations are known</p>
+<table class="table">
+  <thead>
+    <th>Name</th>
+    <th>Ref</th>
+    <th>Edit</th>
+  </thead>
+  <tbody>
+    {% for organisation in organisations %}
+    <tr>
+      <td>{{ organisation.organisation_name }}</td>
+      <td>{{ organisation.organisation_ref }}</td>
+      <td><a href="{{url_for('organisation_dashboard', 
+            organisation_slug = organisation.organisation_slug)}}">
+            <span class="glyphicon glyphicon-pencil"></span>
+          </a></td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

@@ -1,0 +1,159 @@
+{% set active_page='dashboard' %}{% extends "layout.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1>Dashboard for {{ organisation.organisation_name }}</h1>
+<div role="tabpanel">
+
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+    <li role="presentation"><a href="#activities" aria-controls="activities" role="tab" data-toggle="tab">Activities</a></li>
+    <li role="presentation"><a href="#generate" aria-controls="generate" role="tab" data-toggle="tab">Generate IATI-XML</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="overview">
+      <h3>Overview</h3>
+      <dl class="dl-horizontal">
+        <dt>Name</dt>
+        <dd>{{ organisation.organisation_name }}</dd>
+        <dt>Ref</dt>
+        <dd>{{ organisation.organisation_ref }}</dd>
+        <dt>Type</dt>
+        <dd>{{ organisation.organisation_type }}</dd>
+      </dl>
+
+      <a href="{{ url_for('organisation_edit',
+      organisation_slug = organisation.organisation_slug)}}"
+      class="btn btn-default">
+      <b><span class="glyphicon glyphicon-pencil"></span> Edit organisation</b>
+      </a>
+      <h3>Organisation budgets</h3>
+      <table class="table">
+        <thead>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Value</th>
+        </thead>
+        <tbody>
+          {% for budget in organisation_budgets %}
+          <tr>
+            <td>{{ budget.start_date }}</td>
+            <td>{{ budget.end_date }}</td>
+            <td>{{ budget.value }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <h3>Privacy settings</h3>
+      <p>{{ excluded_strings|count }} excluded strings and 
+        {{ aggregated_accounts|count }} aggregated accounts.</p>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="activities">
+      <h2>Activities</h2>
+      <table class="table">
+        <thead>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Edit</th>
+        </thead>
+        <tbody>
+          {% for activity in activities %}
+          <tr>
+            <td>{{ activity.code }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.start_date }}</td>
+            <td>{{ activity.end_date }}</td>
+            <td><a href="{{ url_for('activity_edit', 
+              organisation_slug=organisation.organisation_slug, 
+              activity_id=activity.id) }}">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="generate">
+      <h3>Converted files</h3>
+      <table class="table">
+        <thead>
+          <th>File type</th>
+          <th>Generation date</th>
+          <th>View</th>
+        </thead>
+        <tbody>
+          {% for file in converted_files %}
+          <tr>
+            <td>{{ file.file_type.name }}</td>
+            <td>{{ file.file_generated_date }}</td>
+            <td><a href="{{ url_for('get_file', 
+              organisation_slug=organisation.organisation_slug, 
+              file_id=file.id) }}">
+              <span class="glyphicon glyphicon-eye-open"></span>
+            </a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="col-sm-6">
+        <h3>Generate new activity file</h3>
+        <h4>Upload new transactional data</h4>
+        <div class="alert alert-info">
+          <b>Instructions for extracting data from Sage</b>
+          <ol>
+            <li>Select Company tab from bottom left</li>
+            <li>Reports button</li>
+            <li>Report range:</li>
+            <ul>
+              <li>Accounts: from 4000</li>
+              <li>Report type: Nominal Activity - Nominal Activity</li>
+              <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
+                Jan)</li>
+            </ul>
+            <li>Export to Excel 2007</li>
+          </ol>
+        </div>
+        <form class="form-horizontal" method="post" action="{{
+            url_for('transactions_preview',
+            organisation_slug = organisation.organisation_slug)
+          }}" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="transactions_file" class="col-sm-2 control-label">
+              Transactions</label>
+            <div class="col-sm-10">
+              <input type="file" id="transactions-file" name="transactions-file">
+              <p class="help-block">Select file containing transactional data.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-default">Upload</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="col-sm-6">
+        <h3>Generate new organisation file</h3>
+        <form class="form-horizontal" method="post" action="{{
+            url_for('orgfile_generate',
+            organisation_slug = organisation.organisation_slug)
+          }}">
+          <div class="form-group">
+            <div class="col-sm-10">
+              <button type="submit" class="btn btn-default">Generate</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
