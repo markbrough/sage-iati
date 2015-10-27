@@ -195,6 +195,12 @@ def get_sheet_data(organisation_slug, file):
                            aggregated_account_numbers[account_number],
                            sheet, row_number, dr, book)
                            
+    for k, v in transactional_data["activities"].items():
+        for account, values in transactional_data["activities"][k]["accounts"].items():
+            v = transactional_data["activities"][k]["accounts"][account]
+            dv = sorted(v["disaggregated_values"], key=lambda x: x["date"])
+            transactional_data["activities"][k]["accounts"][account]["disaggregated_values"] = dv
+
     return transactional_data
 
 def parse_transactions(organisation_slug, file):
