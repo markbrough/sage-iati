@@ -17,9 +17,14 @@ def isostring_date(value):
     # Returns a date object from a string of format YYYY-MM-DD
     return datetime.datetime.strptime(value, "%Y-%m-%d")
 
-def isoformat_date(value):
+def isoformat_date(value, bookdatemode):
     # Returns a date YYYY-MM-DD from a string of format DD/MM/YYYY
-    return datetime.datetime.strptime(value, "%d/%m/%Y").date().isoformat()
+    # In an older version of Sage, dates were stored as strings
+    # In a newer version, they're stored as Excel dates
+    if (type(value) == str):
+        return datetime.datetime.strptime(value, "%d/%m/%Y").date().isoformat()
+    year, month, day, hour, minute, second = xlrd.xldate_as_tuple(value, bookdatemode)
+    return datetime.datetime(year,month,day).date().isoformat()
     
 def date_to_isoformat(date):
     return date.isoformat()
@@ -47,10 +52,10 @@ def get_sheet_data(organisation_slug, file):
     # Disaggregated row
     def disaggregated_row(transactional_data, account_number,
                           account_description, sheet, row_number,
-                          activities, excluded_strings):
+                          activities, excluded_strings, book):
         
         transaction_id = int(sheet.cell_value(row_number, 1))
-        date = isoformat_date(sheet.cell_value(row_number, 3))
+        date = isoformat_date(sheet.cell_value(row_number, 3), book.datemode)
         description_unredacted = sheet.cell_value(row_number, 8)
         redacted, description = redact(description_unredacted,
                                        excluded_strings)
@@ -94,7 +99,7 @@ def get_sheet_data(organisation_slug, file):
     
     # Row to be aggregated
     def aggregated_row(transactional_data, account_number, 
-                       account_description, sheet, row_number, dr):
+                       account_description, sheet, row_number, dr, book):
         
         dept = correct_dept(
                 dr['department'],
@@ -183,12 +188,12 @@ def get_sheet_data(organisation_slug, file):
             
         dr = disaggregated_row(transactional_data, account_number,
                           account_description, sheet, row_number,
-                          activities, excluded_strings)
+                          activities, excluded_strings, book)
             
         if account_number in aggregated_account_numbers:
             aggregated_row(transactional_data, account_number, 
                            aggregated_account_numbers[account_number],
-                           sheet, row_number, dr)
+                           sheet, row_number, dr, book)
                            
     return transactional_data
 
