@@ -100,10 +100,10 @@ def generate_iati_data(organisation_slug):
                            pretty_print = True, 
                            xml_declaration=True)
         
-        return redirect(url_for('get_file', 
-                                organisation_slug = organisation_slug,
-                                file_id = newfile_obj.id))
-        
+        flash("Successfully generated new activity file! You can find it at the top of 'Converted files', below.", "success")
+        return redirect(url_for('organisation_dashboard',
+                                organisation_slug = organisation_slug))
+
     return jsonify({"error": "No transactions data found"})
 
 @app.route("/<organisation_slug>/generate_org_file/", 
@@ -124,6 +124,6 @@ def orgfile_generate(organisation_slug):
                   pretty_print = True, 
                   xml_declaration=True)
 
-    return redirect(url_for('get_file', 
-                            organisation_slug = organisation_slug,
-                            file_id = newfile_obj.id))
+    flash("Successfully generated new organisation file! You can find it at the top of 'Converted files', below.", "success")
+    return redirect(url_for('organisation_dashboard',
+                            organisation_slug = organisation_slug))
