@@ -204,3 +204,11 @@ def organisation_add_aggregate_account(organisation_slug):
     if aggregate_account:
         return json.dumps(aggregate_account.as_dict())
     return False
+
+@app.route("/<organisation_slug>/publish_file/", methods=['POST'])
+def update_published_file(organisation_slug):
+    file_id = request.form["file_id"]
+    publish_file = sifiles.publish_file(file_id, organisation_slug)
+    if publish_file:
+        return str(publish_file.file_type_code)
+    return False
