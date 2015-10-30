@@ -25,7 +25,8 @@ def create_file(file_type, organisation_slug):
 def get_file_by_type(organisation_slug, file_type_code):
     orgfile = models.OrgConvertedFile.query.filter_by(
         organisation_slug = organisation_slug,
-        file_type_code = file_type_code
+        file_type_code = file_type_code,
+        file_published = True
     ).first_or_404()
     return orgfile
 
