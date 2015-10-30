@@ -6,15 +6,143 @@
 
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Overview</a></li>
+    <li role="presentation" class="active"><a href="#generate" aria-controls="generate" role="tab" data-toggle="tab">Generate IATI data</a></li>
     <li role="presentation"><a href="#activities" aria-controls="activities" role="tab" data-toggle="tab">Activities</a></li>
-    <li role="presentation"><a href="#generate" aria-controls="generate" role="tab" data-toggle="tab">Generate IATI-XML</a></li>
+    <li role="presentation"><a href="#overview" aria-controls="overview" role="tab" data-toggle="tab">Organisation summary</a></li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="overview">
-      <h3>Overview</h3>
+
+    <div role="tabpanel" class="tab-pane active" id="generate">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>Generate new organisation file</h3>
+              <form class="form-horizontal" method="post" action="{{
+                  url_for('orgfile_generate',
+                  organisation_slug = organisation.organisation_slug)
+                }}">
+                <div class="form-group">
+                  <div class="col-sm-10">
+                    <button type="submit" class="btn btn-default">Generate</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>Generate new activity file</h3>
+              <h4>Upload new transactional data</h4>
+              <div class="alert alert-info">
+                <b>Instructions for extracting data from Sage</b>
+                <ol>
+                  <li>Select Company tab from bottom left</li>
+                  <li>Reports button</li>
+                  <li>Report range:</li>
+                  <ul>
+                    <li>Accounts: from 4000</li>
+                    <li>Report type: Nominal Activity - Nominal Activity</li>
+                    <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
+                      Jan)</li>
+                  </ul>
+                  <li>Export to Excel 2007</li>
+                </ol>
+              </div>
+              <form class="form-horizontal" method="post" action="{{
+                  url_for('transactions_preview',
+                  organisation_slug = organisation.organisation_slug)
+                }}" enctype="multipart/form-data">
+                <div class="form-group">
+                  <label for="transactions_file" class="col-sm-2 control-label">
+                    Transactions</label>
+                  <div class="col-sm-10">
+                    <input type="file" id="transactions-file" name="transactions-file">
+                    <p class="help-block">Select file containing transactional data.</p>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default">Upload</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <h3>Converted files</h3>
+          <table class="table">
+            <thead>
+              <th>File type</th>
+              <th>Generation date</th>
+              <th>View</th>
+              <th>Validate</th>
+              <th>Published</th>
+            </thead>
+            <tbody>
+              {% for cfile in converted_files %}
+              <tr>
+                <td>{{ cfile.file_type.name }}</td>
+                <td>{{ cfile.file_generated_date }}</td>
+                <td><a href="{{ url_for('get_file', 
+                  organisation_slug=organisation.organisation_slug, 
+                  file_id=cfile.id) }}">
+                  <span class="glyphicon glyphicon-eye-open"></span> View
+                </a></td>
+                <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file', 
+                  organisation_slug=organisation.organisation_slug, 
+                  file_id=cfile.id,
+                  _external=True) }}">
+                  <span class="glyphicon glyphicon-ok"></span> Validate
+                </a></td>
+                <td>{% if cfile.file_published %}
+                  <a class="btn btn-success btn-sm publish-btn ft{{ cfile.file_type_code }}" href="" data-file-id="{{ cfile.id }}" data-file-type="{{ cfile.file_type_code }}"> Published</a>
+                    {% else %}
+                  <a class="btn btn-primary btn-sm publish-btn ft{{ cfile.file_type_code }}" href="" data-file-id="{{ cfile.id }}" data-file-type="{{ cfile.file_type_code }}"> Publish</a>
+                    {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="activities">
+      <h2>Activities</h2>
+      <table class="table">
+        <thead>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Description</th>
+          <th>Start date</th>
+          <th>End date</th>
+          <th>Edit</th>
+        </thead>
+        <tbody>
+          {% for activity in activities %}
+          <tr>
+            <td>{{ activity.code }}</td>
+            <td>{{ activity.title }}</td>
+            <td>{{ activity.description }}</td>
+            <td>{{ activity.start_date }}</td>
+            <td>{{ activity.end_date }}</td>
+            <td><a href="{{ url_for('activity_edit', 
+              organisation_slug=organisation.organisation_slug, 
+              activity_id=activity.id) }}">
+              <span class="glyphicon glyphicon-pencil"></span>
+            </a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="overview">
+      <h3>Organisation summary</h3>
       <dl class="dl-horizontal">
         <dt>Name</dt>
         <dd>{{ organisation.organisation_name }}</dd>
@@ -50,120 +178,8 @@
       <p>{{ excluded_strings|count }} excluded strings and 
         {{ aggregated_accounts|count }} aggregated accounts.</p>
     </div>
-    <div role="tabpanel" class="tab-pane" id="activities">
-      <h2>Activities</h2>
-      <table class="table">
-        <thead>
-          <th>ID</th>
-          <th>Title</th>
-          <th>Description</th>
-          <th>Start date</th>
-          <th>End date</th>
-          <th>Edit</th>
-        </thead>
-        <tbody>
-          {% for activity in activities %}
-          <tr>
-            <td>{{ activity.code }}</td>
-            <td>{{ activity.title }}</td>
-            <td>{{ activity.description }}</td>
-            <td>{{ activity.start_date }}</td>
-            <td>{{ activity.end_date }}</td>
-            <td><a href="{{ url_for('activity_edit', 
-              organisation_slug=organisation.organisation_slug, 
-              activity_id=activity.id) }}">
-              <span class="glyphicon glyphicon-pencil"></span>
-            </a></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    <div role="tabpanel" class="tab-pane" id="generate">
-      <div class="row">
-        <div class="col-sm-6">
-          <h3>Generate new activity file</h3>
-          <h4>Upload new transactional data</h4>
-          <div class="alert alert-info">
-            <b>Instructions for extracting data from Sage</b>
-            <ol>
-              <li>Select Company tab from bottom left</li>
-              <li>Reports button</li>
-              <li>Report range:</li>
-              <ul>
-                <li>Accounts: from 4000</li>
-                <li>Report type: Nominal Activity - Nominal Activity</li>
-                <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
-                  Jan)</li>
-              </ul>
-              <li>Export to Excel 2007</li>
-            </ol>
-          </div>
-          <form class="form-horizontal" method="post" action="{{
-              url_for('transactions_preview',
-              organisation_slug = organisation.organisation_slug)
-            }}" enctype="multipart/form-data">
-            <div class="form-group">
-              <label for="transactions_file" class="col-sm-2 control-label">
-                Transactions</label>
-              <div class="col-sm-10">
-                <input type="file" id="transactions-file" name="transactions-file">
-                <p class="help-block">Select file containing transactional data.</p>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default">Upload</button>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="col-sm-6">
-          <h3>Generate new organisation file</h3>
-          <form class="form-horizontal" method="post" action="{{
-              url_for('orgfile_generate',
-              organisation_slug = organisation.organisation_slug)
-            }}">
-            <div class="form-group">
-              <div class="col-sm-10">
-                <button type="submit" class="btn btn-default">Generate</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <h3>Converted files</h3>
-        <table class="table">
-          <thead>
-            <th>File type</th>
-            <th>Generation date</th>
-            <th>View</th>
-            <th>Validate</th>
-          </thead>
-          <tbody>
-            {% for file in converted_files %}
-            <tr>
-              <td>{{ file.file_type.name }}</td>
-              <td>{{ file.file_generated_date }}</td>
-              <td><a href="{{ url_for('get_file', 
-                organisation_slug=organisation.organisation_slug, 
-                file_id=file.id) }}">
-                <span class="glyphicon glyphicon-eye-open"></span> View
-              </a></td>
-              <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file', 
-                organisation_slug=organisation.organisation_slug, 
-                file_id=file.id,
-                _external=True) }}">
-                <span class="glyphicon glyphicon-ok"></span> Validate
-              </a></td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
   </div>
 </div>
 
+<script src="{{url_for('static', filename='js/organisation.js')}}" type="text/javascript"></script>
 {% endblock %}
