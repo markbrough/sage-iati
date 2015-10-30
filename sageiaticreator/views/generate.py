@@ -15,6 +15,24 @@ from lxml import etree as et
 
 DATA_STORAGE_DIR = app.config['DATA_STORAGE_DIR']
 
+@app.route("/<organisation_slug>/activity.xml")
+def get_activity_file(organisation_slug):
+    file_obj = sifiles.get_file_by_type(organisation_slug, "1")
+    full_file_path = os.path.join(DATA_STORAGE_DIR,
+                                  file_obj.file_name)
+    xmlfile = open(full_file_path, 'r')
+    return Response(xmlfile.read(),
+                    mimetype="text/xml")
+
+@app.route("/<organisation_slug>/organisation.xml")
+def get_organisation_file(organisation_slug):
+    file_obj = sifiles.get_file_by_type(organisation_slug, "2")
+    full_file_path = os.path.join(DATA_STORAGE_DIR,
+                                  file_obj.file_name)
+    xmlfile = open(full_file_path, 'r')
+    return Response(xmlfile.read(),
+                    mimetype="text/xml")
+
 @app.route("/<organisation_slug>/files/<file_id>.xml")
 def get_file(organisation_slug, file_id):
     file_obj = sifiles.get_file(file_id)
