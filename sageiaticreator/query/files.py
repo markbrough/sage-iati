@@ -52,6 +52,8 @@ def get_file_type_by_name(name):
 def list_files(organisation_slug):
     orgfiles = models.OrgConvertedFile.query.filter_by(
         organisation_slug = organisation_slug
+            ).order_by(
+                models.OrgConvertedFile.file_generated_date.desc()
             ).all()
     return orgfiles
 
