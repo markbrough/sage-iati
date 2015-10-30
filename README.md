@@ -33,9 +33,18 @@ If you get a `404 - File Not Found` error, make sure you've published a file.
 
 ![Import transactions](transactions-import.png "Import transactions")
 
+Once you've uploaded a file, you can see how the transactions have been attached to your activities, and can see how the transactions have been aggregated (if relevant) or if the transaction descriptions have been partially redacted (if you specified strings to redact in your organisation settings).
+
 #### Edit organisation data
 
 ![Edit organisation data](edit-org.png "Edit organisation data")
+
+By clicking on "Edit organisation data" from the top menu bar, you can edit:
+* basic information (e.g. organisation code, organisation currency)
+* annual budgets for the organisation
+* documents (e.g. annual report, audit)
+* funding organisations (which will appear alongside each of your activities)
+* privacy settings (accounts to aggregate and strings to redact, e.g. personally-identifiable information from your transaction descriptions)
 
 ## License: AGPL v3.0
 
