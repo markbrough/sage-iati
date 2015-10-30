@@ -49,6 +49,11 @@ def get_file_type_by_name(name):
         name = name
     ).first_or_404()
     return filetype
+
+def niceDate(row):
+    row.file_generated_date = row.file_generated_date.replace(
+        microsecond=0)
+    return row
     
 def list_files(organisation_slug):
     orgfiles = models.OrgConvertedFile.query.filter_by(
@@ -56,6 +61,7 @@ def list_files(organisation_slug):
             ).order_by(
                 models.OrgConvertedFile.file_generated_date.desc()
             ).all()
+    orgfiles = list(map(lambda x: niceDate(x), orgfiles))
     return orgfiles
 
 def publish_file(file_id, organisation_slug):
