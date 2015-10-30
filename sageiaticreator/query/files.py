@@ -21,7 +21,14 @@ def create_file(file_type, organisation_slug):
     db.session.add(orgfile)
     db.session.commit()
     return orgfile
-    
+
+def get_file_by_type(organisation_slug, file_type_code):
+    orgfile = models.OrgConvertedFile.query.filter_by(
+        organisation_slug = organisation_slug,
+        file_type_code = file_type_code
+    ).first_or_404()
+    return orgfile
+
 def get_file(id):
     orgfile = models.OrgConvertedFile.query.filter_by(
         id = id
@@ -47,3 +54,26 @@ def list_files(organisation_slug):
         organisation_slug = organisation_slug
             ).all()
     return orgfiles
+
+def publish_file(file_id, organisation_slug):
+    orgfile = models.OrgConvertedFile.query.filter_by(
+        id = file_id
+        ).first()
+
+    # Find other files from the same organisation and same file type
+    otherfiles = models.OrgConvertedFile.query.filter_by(
+        organisation_slug = organisation_slug,
+        file_type_code = orgfile.file_type_code
+        ).all()
+
+    for otherfile in otherfiles:
+        print "Printing otherfiles"
+        otherfile.file_published = 0
+        print otherfile.id
+        print otherfile.file_published
+        db.session.add(otherfile)
+    db.session.commit()
+    orgfile.file_published = 1
+    db.session.add(orgfile)
+    db.session.commit()
+    return orgfile
