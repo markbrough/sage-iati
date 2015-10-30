@@ -3,6 +3,16 @@ Sage to IATI Publisher
 
 Converts transactional information exported from Sage accounting software into IATI-XML format.
 
+How does it work?
+-----------------
+
+1. Set up your activities (i.e. projects) in the user interface or in the setup file (see below)
+2. Upload a spreadsheet of transactional data exported from Sage (instructions for specific data you need to export are in the user interface)
+3. The "Department" field in your Sage data is used to map to the activity code that you set in the user interface
+4. You can also specify accounts to aggregate (e.g. salaries) and strings that should be redacted from your transaction descriptions (e.g. people's names or initials)
+5. You can then preview and generate IATI-XML data
+6. When you're ready, you can then publish your IATI-XML data so that you can register it with the IATI Registry.
+
 License: AGPL v3.0
 ------------------
 
