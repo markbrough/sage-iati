@@ -19,6 +19,16 @@ Works with:
 
 ![Dashboard](dashboard.png "Dashboard")
 
+Published files (where you click the blue `Publish` button next to a file and it turns green) are available at `organisation.xml` or `activity.xml`. At the moment, you can only have one of each type of file published.
+
+For example, if you're looking at the Dashboard at:
+http://sage2iati.publishwhatyoufund.org/publish-what-you-fund/
+
+Then the activity file will be available at:
+http://sage2iati.publishwhatyoufund.org/publish-what-you-fund/activity.xml
+
+If you get a `404 - File Not Found` error, make sure you've published a file.
+
 #### Import transactions
 
 ![Import transactions](transactions-import.png "Import transactions")
