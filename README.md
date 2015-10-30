@@ -1,10 +1,12 @@
-Sage to IATI Publisher
-======================
+# Sage to IATI Publisher
 
 Converts transactional information exported from Sage accounting software into IATI-XML format.
 
-How does it work?
------------------
+Works with: 
+
+* Sage 50 Accounts Plus 2011 (version 17.0.15.208)
+
+## How does it work?
 
 1. Set up your activities (i.e. projects) in the user interface or in the setup file (see below)
 2. Upload a spreadsheet of transactional data exported from Sage (instructions for specific data you need to export are in the user interface)
@@ -13,8 +15,19 @@ How does it work?
 5. You can then preview and generate IATI-XML data
 6. When you're ready, you can then publish your IATI-XML data so that you can register it with the IATI Registry.
 
-License: AGPL v3.0
-------------------
+#### Dashboard
+
+![Dashboard](dashboard.png "Dashboard")
+
+#### Import transactions
+
+![Import transactions](transactions-import.png "Import transactions")
+
+#### Edit organisation data
+
+![Edit organisation data](edit-org.png "Edit organisation data")
+
+## License: AGPL v3.0
 
 Copyright (C) 2015 Mark Brough, Publish What You Fund
 
@@ -31,13 +44,11 @@ Copyright (C) 2015 Mark Brough, Publish What You Fund
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
     
-DISCLAIMER
-----------
+#### DISCLAIMER
 
     This software is not in any way endorsed by or related to Sage.
     
-Installation
-------------
+## Installation
 
 Set up a virtualenv:
 
