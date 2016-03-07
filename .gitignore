@@ -1,0 +1,7 @@
+*.pyc
+*.sqlite
+
+/pyenv
+
+/sageiaticreator/setup.py
+/config.py
