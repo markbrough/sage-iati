@@ -173,11 +173,14 @@ def get_sheet_data(organisation_slug, file):
     
     for row_number in range(0, num_rows):
         cv = sheet.cell_value(row_number, 1)
-        if cv == "N/C:":
-            account_number = sheet.cell_value(row_number, 2)
-            account_description =  sheet.cell_value(row_number, 6)
-            continue
-            
+        if cv in ("", "N/C:",):
+            an = sheet.cell_value(row_number, 2)
+            ad = sheet.cell_value(row_number, 6)
+            if an != "" and ad != "":
+                account_number = an
+                account_description = ad
+                continue
+
         # Ignore header rows and blank rows
         if str(cv).startswith("No") or (cv == ""):
             continue
