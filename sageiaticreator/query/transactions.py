@@ -57,6 +57,8 @@ def get_sheet_data(organisation_slug, file):
         transaction_id = int(sheet.cell_value(row_number, 1))
         date = isoformat_date(sheet.cell_value(row_number, 3), book.datemode)
         description_unredacted = sheet.cell_value(row_number, 8)
+        if description_unredacted == "Ledger Year End":
+            return None
         redacted, description = redact(description_unredacted,
                                        excluded_strings)
         department = sheet.cell_value(row_number, 10)
@@ -192,7 +194,9 @@ def get_sheet_data(organisation_slug, file):
         dr = disaggregated_row(transactional_data, account_number,
                           account_description, sheet, row_number,
                           activities, excluded_strings, book)
-            
+        if dr is None:
+            continue
+
         if account_number in aggregated_account_numbers:
             aggregated_row(transactional_data, account_number, 
                            aggregated_account_numbers[account_number],
