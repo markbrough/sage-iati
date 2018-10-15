@@ -26,8 +26,8 @@ def actual_or_planned(value):
     date = isostring_date(value)
     current_datetime = datetime.datetime.now()
     if date > current_datetime:
-        return "actual"
-    return "planned"
+        return "planned"
+    return "actual"
 
 def el_with_narrative(element_name, narrative):
     el = et.Element(element_name)
