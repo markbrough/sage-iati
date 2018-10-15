@@ -93,6 +93,7 @@ def new_doc(organisation_slug):
     nd.title = ""
     nd.url = ""
     nd.category = ""
+    nd.date = None
     nd.format = ""
     nd.organisation_slug = organisation_slug
     db.session.add(nd)
@@ -113,6 +114,11 @@ def update_doc(data):
     ud = models.OrgDoc.query.filter_by(
         id = data['id']
     ).first()
+    if data['attr'] == 'date':
+        if data['value'] == '':
+            data['value'] = None
+        else:
+            data['value'] = isostring_date(data['value'])
     setattr(ud, data['attr'], data['value'])
     db.session.add(ud)
     db.session.commit()

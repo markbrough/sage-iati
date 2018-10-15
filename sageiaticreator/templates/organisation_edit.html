@@ -151,6 +151,7 @@
             <th>Title</th>
             <th>URL</th>
             <th>Format</th>
+            <th>Date</th>
             <th>Category</th>
             <th>Delete</th>
           </thead>
@@ -169,6 +170,10 @@
               <td><div class="form-group">
                   <input type="text" class="form-control" name="format"
                   value="{{ doc.format }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="date"
+                  value="{{ doc.date or '' }}">
                 </div></td>
               <td><div class="form-group">
                   <input type="text" class="form-control" name="category"

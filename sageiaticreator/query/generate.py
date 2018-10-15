@@ -320,6 +320,8 @@ def el_org_doc(document):
     el_d.set("format", document.format)
     el_d.append(el_with_narrative("title", document.title))
     el_d.append(el_with_attrib("category", "code", document.category))
+    if document.date:
+        el_d.append(el_with_attrib("document-date", "iso-date", str(document.date)))
     return el_d
     
 def build_organisation(doc, organisation):

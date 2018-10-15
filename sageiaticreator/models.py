@@ -56,11 +56,12 @@ class OrgDoc(db.Model):
     url = sa.Column(sa.UnicodeText)
     title = sa.Column(sa.UnicodeText)
     format = sa.Column(sa.UnicodeText)
+    date = sa.Column(sa.Date, nullable=True)
     category = sa.Column(sa.UnicodeText)
 
     def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+       return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
 class OrgExcludedStrings(db.Model):
     __tablename__ = 'organisationexcludedstrings'
     id = sa.Column(sa.Integer, primary_key=True)

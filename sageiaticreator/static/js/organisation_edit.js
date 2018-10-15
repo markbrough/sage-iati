@@ -145,6 +145,10 @@ $(".addOrgDocBtn").click(function(e) {
           value="' + data['format'] + '"> \
         </div></td> \
       <td><div class="form-group"> \
+          <input type="text" class="form-control" name="date" \
+          value=""> \
+        </div></td> \
+      <td><div class="form-group"> \
           <input type="text" class="form-control" name="category" \
           value="' + data['category'] + '"> \
         </div></td> \
