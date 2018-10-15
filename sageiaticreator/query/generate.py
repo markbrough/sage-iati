@@ -289,7 +289,7 @@ def build_activity(doc, activity, organisation):
 # Process prepared transactions jsondata
 def generate_iati_activity_data(jsondata, organisation_slug):
     doc = et.Element('iati-activities')
-    doc.set("version", "2.01")
+    doc.set("version", "2.03")
     doc.set("generated-datetime", current_datetime())
     
     organisation = siorganisation.get_org(organisation_slug)
@@ -352,7 +352,7 @@ def build_organisation(doc, organisation):
 def generate_iati_organisation_data(organisation_slug):
     organisation = siorganisation.get_org(organisation_slug)
     doc = et.Element('iati-organisations')
-    doc.set("version", "2.01")
+    doc.set("version", "2.03")
     doc.set("generated-datetime", current_datetime())
     doc = build_organisation(doc, organisation)
     doc = et.ElementTree(doc)
