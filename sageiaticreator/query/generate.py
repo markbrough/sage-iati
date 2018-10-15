@@ -228,7 +228,6 @@ def build_activity(doc, activity, organisation):
     doc.append(ia)
 
     ia.set("last-updated-datetime", current_datetime())
-    #FIXME: put default currency in organisation settings
     ia.set("default-currency", organisation.organisation_default_currency)
     
     o_name = organisation.organisation_name
@@ -329,11 +328,13 @@ def build_organisation(doc, organisation):
     o_ref = organisation.organisation_ref
     o_type = organisation.organisation_type
     o_currency = organisation.organisation_default_currency
-    
+    o_language = organisation.organisation_default_language
+
     org = el_with_attrib("iati-organisation", "last-updated-datetime",
                          current_datetime())
     doc.append(org)
     org.set("default-currency", o_currency)
+    org.set("{http://www.w3.org/XML/1998/namespace}lang", o_language)
     org.append(el_with_text("organisation-identifier",
                             o_ref))
     org.append(el_with_narrative("name", o_name))

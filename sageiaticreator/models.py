@@ -22,6 +22,7 @@ class Organisation(db.Model):
     organisation_slug = sa.Column(sa.UnicodeText, 
                             primary_key=True)
     organisation_default_currency = sa.Column(sa.UnicodeText)
+    organisation_default_language = sa.Column(sa.UnicodeText)
     organisation_contact_name = sa.Column(sa.UnicodeText)
     organisation_contact_email = sa.Column(sa.UnicodeText)
     organisation_contact_address = sa.Column(sa.UnicodeText)

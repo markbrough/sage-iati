@@ -41,8 +41,8 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_default_currency" class="col-sm-2 
-          control-label">Currency</label>
+          <label for="organisation_default_currency" class="col-sm-2
+          control-label">Default currency</label>
           <div class="col-sm-10">
             <input type="text" name="organisation_default_currency" 
             id="organisation_default_currency" 
@@ -51,7 +51,17 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_contact_name" class="col-sm-2 
+          <label for="organisation_default_language" class="col-sm-2
+          control-label">Default language</label>
+          <div class="col-sm-10">
+            <input type="text" name="organisation_default_language"
+            id="organisation_default_language"
+            value="{{ organisation.organisation_default_language }}"
+            class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="organisation_contact_name" class="col-sm-2
           control-label">Contact name</label>
           <div class="col-sm-10">
             <input type="text" name="organisation_contact_name" 
