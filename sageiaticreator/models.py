@@ -19,7 +19,7 @@ class Organisation(db.Model):
     organisation_name = sa.Column(sa.UnicodeText)
     organisation_ref = sa.Column(sa.UnicodeText)
     organisation_type = sa.Column(sa.UnicodeText)
-    organisation_slug = sa.Column(sa.UnicodeText, 
+    organisation_slug = sa.Column(sa.UnicodeText,
                             primary_key=True)
     organisation_default_currency = sa.Column(sa.UnicodeText)
     organisation_default_language = sa.Column(sa.UnicodeText)
@@ -35,12 +35,12 @@ class Organisation(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class OrgBudget(db.Model):
     __tablename__ = 'organisationbudget'
     id = sa.Column(sa.Integer, primary_key=True)
     organisation_slug = sa.Column(
-            sa.ForeignKey('organisation.organisation_slug'), 
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     start_date = sa.Column(sa.Date)
     end_date = sa.Column(sa.Date)
@@ -70,8 +70,8 @@ class OrgExpenditure(db.Model):
 class OrgDoc(db.Model):
     __tablename__ = 'organisationdoc'
     id = sa.Column(sa.Integer, primary_key=True)
-    organisation_slug = sa.Column(sa.Integer, 
-            sa.ForeignKey('organisation.organisation_slug'), 
+    organisation_slug = sa.Column(sa.Integer,
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     url = sa.Column(sa.UnicodeText)
     title = sa.Column(sa.UnicodeText)
@@ -85,19 +85,19 @@ class OrgDoc(db.Model):
 class OrgExcludedStrings(db.Model):
     __tablename__ = 'organisationexcludedstrings'
     id = sa.Column(sa.Integer, primary_key=True)
-    organisation_slug = sa.Column(sa.Integer, 
-            sa.ForeignKey('organisation.organisation_slug'), 
+    organisation_slug = sa.Column(sa.Integer,
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     excluded_string = sa.Column(sa.UnicodeText)
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class OrgAggregatedAccounts(db.Model):
     __tablename__ = 'organisationaggregatedaccounts'
     id = sa.Column(sa.Integer, primary_key=True)
-    organisation_slug = sa.Column(sa.Integer, 
-            sa.ForeignKey('organisation.organisation_slug'), 
+    organisation_slug = sa.Column(sa.Integer,
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     account_number = sa.Column(sa.UnicodeText)
     account_description = sa.Column(sa.UnicodeText)
@@ -109,7 +109,7 @@ class OrgFunder(db.Model):
     __tablename__ = 'organisationfunder'
     id = sa.Column(sa.Integer, primary_key=True)
     organisation_slug = sa.Column(
-            sa.ForeignKey('organisation.organisation_slug'), 
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
 
     organisation = sa.orm.relationship(
@@ -125,10 +125,10 @@ class OrgConvertedFile(db.Model):
     __tablename__ = 'organisationfile'
     id = sa.Column(sa.Integer, primary_key=True)
     organisation_slug = sa.Column(
-            sa.ForeignKey('organisation.organisation_slug'), 
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     file_type_code = sa.Column(
-            sa.ForeignKey('file_type.code'), 
+            sa.ForeignKey('file_type.code'),
             nullable=False)
     file_type = sa.orm.relationship(
                         "FileType")
@@ -148,12 +148,12 @@ class FileType(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class Activity(db.Model):
     __tablename__ = 'activity'
     id = sa.Column(sa.Integer, primary_key=True)
-    organisation_slug = sa.Column(sa.Integer, 
-            sa.ForeignKey('organisation.organisation_slug'), 
+    organisation_slug = sa.Column(sa.Integer,
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     code = sa.Column(sa.UnicodeText)
     title = sa.Column(sa.UnicodeText)
@@ -172,15 +172,15 @@ class Activity(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class ActivityLocation(db.Model):
     __tablename__ = 'activitylocation'
     id = sa.Column(sa.Integer, primary_key=True)
-    organisation_slug = sa.Column(sa.Integer, 
-            sa.ForeignKey('organisation.organisation_slug'), 
+    organisation_slug = sa.Column(sa.Integer,
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
-    activity_id = sa.Column(sa.Integer, 
-            sa.ForeignKey('activity.id'), 
+    activity_id = sa.Column(sa.Integer,
+            sa.ForeignKey('activity.id'),
             nullable=False)
     location_name = sa.Column(sa.UnicodeText)
     location_lat = sa.Column(sa.UnicodeText)
@@ -188,12 +188,12 @@ class ActivityLocation(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class ActivityResult(db.Model):
     __tablename__ = 'activityresult'
     id = sa.Column(sa.Integer, primary_key=True)
     activity_id = sa.Column(
-            act_ForeignKey('activity.id'), 
+            act_ForeignKey('activity.id'),
             nullable=False,
             index=True)
     result_title = sa.Column(sa.UnicodeText)
@@ -206,12 +206,12 @@ class ActivityResult(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class ActivityResultIndicator(db.Model):
     __tablename__ = 'activityresultindicator'
     id = sa.Column(sa.Integer, primary_key=True)
     result_id = sa.Column(
-            act_ForeignKey('activityresult.id'), 
+            act_ForeignKey('activityresult.id'),
             nullable=False,
             index=True)
     indicator_title = sa.Column(sa.UnicodeText)
@@ -225,12 +225,12 @@ class ActivityResultIndicator(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class ActivityResultIndicatorPeriod(db.Model):
     __tablename__ = 'activityresultindicatorperiod'
     id = sa.Column(sa.Integer, primary_key=True)
     indicator_id = sa.Column(
-            act_ForeignKey('activityresultindicator.id'), 
+            act_ForeignKey('activityresultindicator.id'),
             nullable=False,
             index=True)
     period_start = sa.Column(sa.Date)
@@ -243,7 +243,7 @@ class ActivityResultIndicatorPeriod(db.Model):
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
-    
+
 class User(db.Model):
     __tablename__ = 'sageiatiuser'
     id = sa.Column(sa.Integer, primary_key=True)
@@ -272,7 +272,7 @@ class User(db.Model):
         self.organisation = organisation
         if id is not None:
             self.id = id
-    
+
     def check_password(self, password):
         return check_password_hash(self.pw_hash, password)
 
@@ -287,13 +287,13 @@ class User(db.Model):
 
     def is_authenticated(self):
         return True
-        
+
 class UserPermission(db.Model):
     __tablename__ = 'userpermission'
     id = sa.Column(sa.Integer, primary_key=True)
     user_id = sa.Column(sa.Integer, sa.ForeignKey('sageiatiuser.id', ondelete='CASCADE'))
     organisation_slug = sa.Column(
-            sa.ForeignKey('organisation.organisation_slug'), 
+            sa.ForeignKey('organisation.organisation_slug'),
             nullable=False)
     permission_name = sa.Column(sa.UnicodeText)
 

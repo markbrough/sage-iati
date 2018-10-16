@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, request, Markup, \
     session, redirect, url_for, escape, Response, abort, send_file, jsonify
 from flask.ext.login import login_required, current_user
-                            
+
 from sageiaticreator import app, db, models
 from sageiaticreator.query import user as quser
 from sageiaticreator.query import organisation as siorganisation
@@ -166,7 +166,7 @@ def organisation_edit_doc(organisation_slug):
     if update_status == True:
         return "success"
     return "error"
-    
+
 @app.route("/<organisation_slug>/edit/add_funding_org/", methods=['POST'])
 def organisation_new_funder(organisation_slug):
     data = {

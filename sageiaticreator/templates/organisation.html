@@ -66,7 +66,7 @@
                   <ul>
                     <li>Accounts: from 4000</li>
                     <li>Report type: Nominal Activity - Nominal Activity</li>
-                    <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31 
+                    <li>Date: from 01/10/2011 to end of last month (e.g. in Feb use 31
                       Jan)</li>
                   </ul>
                   <li>Export to Excel 2007</li>
@@ -90,13 +90,13 @@
               <tr>
                 <td>{{ cfile.file_type.name }}</td>
                 <td>{{ cfile.file_generated_date }}</td>
-                <td><a href="{{ url_for('get_file', 
-                  organisation_slug=organisation.organisation_slug, 
+                <td><a href="{{ url_for('get_file',
+                  organisation_slug=organisation.organisation_slug,
                   file_id=cfile.id) }}">
                   <span class="glyphicon glyphicon-eye-open"></span> View
                 </a></td>
-                <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file', 
-                  organisation_slug=organisation.organisation_slug, 
+                <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file',
+                  organisation_slug=organisation.organisation_slug,
                   file_id=cfile.id,
                   _external=True) }}">
                   <span class="glyphicon glyphicon-ok"></span> Validate
@@ -133,8 +133,8 @@
             <td>{{ activity.description }}</td>
             <td>{{ activity.start_date }}</td>
             <td>{{ activity.end_date }}</td>
-            <td><a href="{{ url_for('activity_edit', 
-              organisation_slug=organisation.organisation_slug, 
+            <td><a href="{{ url_for('activity_edit',
+              organisation_slug=organisation.organisation_slug,
               activity_id=activity.id) }}">
               <span class="glyphicon glyphicon-pencil"></span>
             </a></td>
@@ -178,7 +178,7 @@
         </tbody>
       </table>
       <h3>Privacy settings</h3>
-      <p>{{ excluded_strings|count }} excluded strings and 
+      <p>{{ excluded_strings|count }} excluded strings and
         {{ aggregated_accounts|count }} aggregated accounts.</p>
     </div>
   </div>

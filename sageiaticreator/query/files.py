@@ -35,7 +35,7 @@ def get_file(id):
         id = id
     ).first_or_404()
     return orgfile
-    
+
 def create_file_type(code, name):
     file_type = models.FileType()
     file_type.code = code
@@ -43,7 +43,7 @@ def create_file_type(code, name):
     db.session.add(file_type)
     db.session.commit()
     return file_type
-        
+
 def get_file_type_by_name(name):
     filetype = models.FileType.query.filter_by(
         name = name
@@ -54,7 +54,7 @@ def niceDate(row):
     row.file_generated_date = row.file_generated_date.replace(
         microsecond=0)
     return row
-    
+
 def list_files(organisation_slug):
     orgfiles = models.OrgConvertedFile.query.filter_by(
         organisation_slug = organisation_slug

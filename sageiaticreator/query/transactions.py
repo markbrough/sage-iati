@@ -25,14 +25,14 @@ def isoformat_date(value, bookdatemode):
         return datetime.datetime.strptime(value, "%d/%m/%Y").date().isoformat()
     year, month, day, hour, minute, second = xlrd.xldate_as_tuple(value, bookdatemode)
     return datetime.datetime(year,month,day).date().isoformat()
-    
+
 def date_to_isoformat(date):
     return date.isoformat()
 
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-           
+
 def correct_dept(department, activities):
     dept = unicode(int(department))
     if dept not in activities:
@@ -40,20 +40,20 @@ def correct_dept(department, activities):
         # everything in the highest number activity
         return max(activities.keys())
     return dept
-    
+
 def redact(description, excluded_strings):
     exclusions = '|'.join(excluded_strings)
     redacted_description = re.sub(exclusions, "*", description)
     if redacted_description != description:
         return True, redacted_description
     return False, description
-           
+
 def get_sheet_data(organisation_slug, file):
     # Disaggregated row
     def disaggregated_row(transactional_data, account_number,
                           account_description, sheet, row_number,
                           activities, excluded_strings, book):
-        
+
         transaction_id = int(sheet.cell_value(row_number, 1))
         date = isoformat_date(sheet.cell_value(row_number, 3), book.datemode)
         description_unredacted = sheet.cell_value(row_number, 8)
@@ -64,7 +64,7 @@ def get_sheet_data(organisation_slug, file):
         department = sheet.cell_value(row_number, 10)
         debit = sheet.cell_value(row_number, 14)
         credit = sheet.cell_value(row_number, 16)
-        
+
         dept = correct_dept(
                 department,
                 activities
@@ -75,7 +75,7 @@ def get_sheet_data(organisation_slug, file):
                                   'aggregated_values': {}}
         tra = tr[account_number]
         trd = tra['disaggregated_values']
-        
+
         if credit != "":
             transaction_type = "Credit"
             value = credit
@@ -94,20 +94,20 @@ def get_sheet_data(organisation_slug, file):
             "transaction_type": transaction_type,
             "department": department,
         }
-        
+
         trd.append(dr)
-        
+
         return dr
-    
+
     # Row to be aggregated
-    def aggregated_row(transactional_data, account_number, 
+    def aggregated_row(transactional_data, account_number,
                        account_description, sheet, row_number, dr, book):
-        
+
         dept = correct_dept(
                 dr['department'],
                 activities
                 )
-                
+
         tr = transactional_data['activities'][dept]['accounts']
         if account_number not in tr:
             tr[account_number] = {'disaggregated_values': [],
@@ -115,7 +115,7 @@ def get_sheet_data(organisation_slug, file):
         tra = tr[account_number]
         tra['aggregation'] = True
         tra = tra['aggregated_values']
-                                  
+
         datem = "%s-28" % dr['date'][0:7]
         if datem not in tra:
             tra[datem] = dr.copy()
@@ -130,19 +130,19 @@ def get_sheet_data(organisation_slug, file):
                 tra[datem]['value'] -= dr['value']
             else:
                 tra[datem]['value'] += dr['value']
-        
+
         return transactional_data
-    
+
     book = xlrd.open_workbook(filename=None,
         file_contents = file.stream.read())
     sheet = book.sheet_by_name("Nominal Activity")
     num_rows = sheet.nrows
-    
+
     date_exported = sheet.cell_value(0, 2)
     #FIXME does the date exported value need to be used?
-    
+
     account_number = None
-    
+
     aggregated_accounts = siorganisation.list_aggregated_accounts(
         organisation_slug
     )
@@ -158,21 +158,21 @@ def get_sheet_data(organisation_slug, file):
         map(lambda x: x.excluded_string,
                       excluded_strings)
     )
-    
+
     def fix_dates_accounts(data):
         data['start_date'] = date_to_isoformat(data['start_date'])
         data['end_date'] = date_to_isoformat(data['end_date'])
         data['accounts'] = {}
         return data
-    
+
     activities = siactivity.list_activities(organisation_slug)
     activities = dict(
         map(lambda x: (x.code, fix_dates_accounts(x.as_dict())),
                        activities)
     )
-    
+
     transactional_data = {'activities': activities }
-    
+
     for row_number in range(0, num_rows):
         cv = sheet.cell_value(row_number, 1)
         if cv in ("", "N/C:",):
@@ -186,11 +186,11 @@ def get_sheet_data(organisation_slug, file):
         # Ignore header rows and blank rows
         if str(cv).startswith("No") or (cv == ""):
             continue
-            
+
         # Drop all rows before an account is set
         if not account_number:
             continue
-            
+
         dr = disaggregated_row(transactional_data, account_number,
                           account_description, sheet, row_number,
                           activities, excluded_strings, book)
@@ -198,10 +198,10 @@ def get_sheet_data(organisation_slug, file):
             continue
 
         if account_number in aggregated_account_numbers:
-            aggregated_row(transactional_data, account_number, 
+            aggregated_row(transactional_data, account_number,
                            aggregated_account_numbers[account_number],
                            sheet, row_number, dr, book)
-                           
+
     for k, v in transactional_data["activities"].items():
         for account, values in transactional_data["activities"][k]["accounts"].items():
             v = transactional_data["activities"][k]["accounts"][account]

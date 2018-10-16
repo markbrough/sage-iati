@@ -16,7 +16,7 @@ def dashboard():
                 organisations = organisations,
                 loggedinuser=current_user
                           )
-                          
+
 @app.route("/setup/")
 def setup():
     sisetup.setup()

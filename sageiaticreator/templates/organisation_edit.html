@@ -45,9 +45,9 @@
           <label for="organisation_default_currency" class="col-sm-2
           control-label">Default currency</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_default_currency" 
-            id="organisation_default_currency" 
-            value="{{ organisation.organisation_default_currency }}" 
+            <input type="text" name="organisation_default_currency"
+            id="organisation_default_currency"
+            value="{{ organisation.organisation_default_currency }}"
             class="form-control">
           </div>
         </div>
@@ -65,49 +65,49 @@
           <label for="organisation_contact_name" class="col-sm-2
           control-label">Contact name</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_contact_name" 
-            id="organisation_contact_name" 
-            value="{{ organisation.organisation_contact_name }}" 
+            <input type="text" name="organisation_contact_name"
+            id="organisation_contact_name"
+            value="{{ organisation.organisation_contact_name }}"
             class="form-control">
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_contact_email" class="col-sm-2 
+          <label for="organisation_contact_email" class="col-sm-2
           control-label">Contact email</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_contact_email" 
-            id="organisation_contact_email" 
-            value="{{ organisation.organisation_contact_email }}" 
+            <input type="text" name="organisation_contact_email"
+            id="organisation_contact_email"
+            value="{{ organisation.organisation_contact_email }}"
             class="form-control">
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_contact_address" class="col-sm-2 
+          <label for="organisation_contact_address" class="col-sm-2
           control-label">Contact address</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_contact_address" 
-            id="organisation_contact_address" 
-            value="{{ organisation.organisation_contact_address }}" 
+            <input type="text" name="organisation_contact_address"
+            id="organisation_contact_address"
+            value="{{ organisation.organisation_contact_address }}"
             class="form-control">
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_contact_phone" class="col-sm-2 
+          <label for="organisation_contact_phone" class="col-sm-2
           control-label">Contact phone number</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_contact_phone" 
-            id="organisation_contact_phone" 
-            value="{{ organisation.organisation_contact_phone }}" 
+            <input type="text" name="organisation_contact_phone"
+            id="organisation_contact_phone"
+            value="{{ organisation.organisation_contact_phone }}"
             class="form-control">
           </div>
         </div>
         <div class="form-group">
-          <label for="organisation_contact_website" class="col-sm-2 
+          <label for="organisation_contact_website" class="col-sm-2
           control-label">Contact website</label>
           <div class="col-sm-10">
-            <input type="text" name="organisation_contact_website" 
-            id="organisation_contact_website" 
-            value="{{ organisation.organisation_contact_website }}" 
+            <input type="text" name="organisation_contact_website"
+            id="organisation_contact_website"
+            value="{{ organisation.organisation_contact_website }}"
             class="form-control">
           </div>
         </div>
@@ -271,7 +271,7 @@
           {% endfor %}
         </tbody>
       </table>
-      <a href="" class="btn btn-success" data-toggle="modal" 
+      <a href="" class="btn btn-success" data-toggle="modal"
       data-target="#addFunderModal">
         <span class="glyphicon glyphicon-plus"></span> <b>Add funder</b>
       </a>
@@ -299,7 +299,7 @@
             {% endfor %}
           </tbody>
         </table>
-        <a href="" class="btn btn-success" data-toggle="modal" 
+        <a href="" class="btn btn-success" data-toggle="modal"
         data-target="#excludedStringModal">
           <span class="glyphicon glyphicon-plus"></span> <b>Add excluded string</b>
         </a>
@@ -327,7 +327,7 @@
           </tbody>
         </table>
 
-        <a href="" class="btn btn-success" data-toggle="modal" 
+        <a href="" class="btn btn-success" data-toggle="modal"
         data-target="#aggregateAccountModal">
           <span class="glyphicon glyphicon-plus"></span> <b>Add aggregate account</b>
         </a>
@@ -337,7 +337,7 @@
 </div>
 
 <!-- Excluded string modal -->
-<div class="modal fade" id="addFunderModal" tabindex="-1" 
+<div class="modal fade" id="addFunderModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -352,7 +352,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="funding_org_name" class="col-sm-2 control-label">
               Name</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="funding_org_name" 
+              <input type="text" class="form-control" id="funding_org_name"
               name="funding_org_name" placeholder="Name of the funding org">
             </div>
           </div>
@@ -360,7 +360,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="funding_org_ref" class="col-sm-2 control-label">
               Ref</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="funding_org_ref" 
+              <input type="text" class="form-control" id="funding_org_ref"
               name="funding_org_ref" placeholder="Organisation ID">
             </div>
           </div>
@@ -368,7 +368,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="funding_org_type" class="col-sm-2 control-label">
               Type</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="funding_org_type" 
+              <input type="text" class="form-control" id="funding_org_type"
               name="funding_org_type" placeholder="Organisation Type">
             </div>
           </div>
@@ -385,7 +385,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
 
 <!-- Aggregate account modal -->
-<div class="modal fade" id="aggregateAccountModal" tabindex="-1" 
+<div class="modal fade" id="aggregateAccountModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -399,7 +399,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="account_number" class="col-sm-2 control-label">
               Account</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="account_number" 
+              <input type="text" class="form-control" id="account_number"
               name="account_number" placeholder="Account number to be aggregated">
             </div>
           </div>
@@ -407,7 +407,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="account_description" class="col-sm-2 control-label">
               Description</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="account_description" 
+              <input type="text" class="form-control" id="account_description"
               name="account_description" placeholder="e.g. Aggregated Salary costs">
             </div>
           </div>
@@ -423,7 +423,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
 
 <!-- Excluded string modal -->
-<div class="modal fade" id="excludedStringModal" tabindex="-1" 
+<div class="modal fade" id="excludedStringModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -438,7 +438,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <label for="excluded_string" class="col-sm-2 control-label">
               String</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="excluded_string" 
+              <input type="text" class="form-control" id="excluded_string"
               name="excluded_string" placeholder="String to exclude">
             </div>
           </div>

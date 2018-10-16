@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, request, Markup, \
     session, redirect, url_for, escape, Response, abort, send_file, jsonify
 from flask.ext.login import login_required, current_user
-                            
+
 from sageiaticreator import app, db, models
 from sageiaticreator.query import user as quser
 from sageiaticreator.query import organisation as siorganisation
@@ -19,7 +19,7 @@ def activity_edit(organisation_slug, activity_id):
                 activity = activity,
                 loggedinuser=current_user,
                           )
-                          
+
 @app.route("/<organisation_slug>/<activity_id>/edit/update_result/", methods=['POST'])
 def activity_edit_result_attr(organisation_slug, activity_id):
     data = {

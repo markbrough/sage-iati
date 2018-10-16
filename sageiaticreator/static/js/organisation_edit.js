@@ -191,7 +191,7 @@ $(".addOrgDocBtn").click(function(e) {
     </tr>')
   }).fail(function() {
     alert("Unable to add a new budget!");
-  }); 
+  });
 });
 
 $(document).on("click", ".deleteFunderBtn", function(e) {
@@ -220,7 +220,7 @@ $(document).on("change", "#org-data-form input", function(e) {
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  });  
+  });
 });
 $(document).on("focus", "#org-budget-form input, #org-doc.form input, #org-expenditure-form input", function(e) {
   resetFormGroup(this);
@@ -289,7 +289,7 @@ $(document).on("change", "#org-doc-form input", function(e) {
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  }); 
+  });
 });
 $(document).on("click", ".deleteOrgDocBtn", function(e) {
   e.preventDefault();
