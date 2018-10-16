@@ -42,6 +42,9 @@ def organisation_edit(organisation_slug):
     organisation_budgets = siorganisation.list_org_budgets(
         organisation_slug
     )
+    organisation_expenditure = siorganisation.list_org_expenditure(
+        organisation_slug
+    )
     organisation_docs = siorganisation.list_org_docs(
         organisation_slug
     )
@@ -55,14 +58,16 @@ def organisation_edit(organisation_slug):
         organisation_slug
     )
     return render_template("organisation_edit.html",
-                organisation = organisation,
-                organisation_budgets = organisation_budgets,
-                excluded_strings = excluded_strings,
-                aggregated_accounts = aggregated_accounts,
-                funders = funders,
-                organisation_docs = organisation_docs,
-                loggedinuser=current_user
-                          )
+        organisation=organisation,
+        organisation_budgets=organisation_budgets,
+        organisation_expenditure=organisation_expenditure,
+        excluded_strings=excluded_strings,
+        aggregated_accounts=aggregated_accounts,
+        funders=funders,
+        organisation_docs=organisation_docs,
+        loggedinuser=current_user
+    )
+
 
 @app.route("/<organisation_slug>/edit/update_org_attr/", methods=['POST'])
 def organisation_edit_attr(organisation_slug):
@@ -103,6 +108,36 @@ def organisation_delete_budget(organisation_slug):
     if deleted_budget:
         return "success"
     return False
+
+
+@app.route("/<organisation_slug>/edit/update_org_expenditure/", methods=['POST'])
+def organisation_edit_expenditure(organisation_slug):
+    data = {
+        'attr': request.form['attr'],
+        'value': request.form['value'],
+        'id': request.form['id'],
+        'organisation_slug': organisation_slug,
+    }
+    update_status = siorganisation.update_expenditure(data)
+    return "success" if update_status else "error"
+
+
+@app.route("/<organisation_slug>/edit/new_org_expenditure/", methods=['POST'])
+def organisation_new_expenditure(organisation_slug):
+    new_expenditure = siorganisation.new_expenditure(organisation_slug)
+    if new_expenditure:
+        return json.dumps(new_expenditure)
+    return "error"
+
+
+@app.route("/<organisation_slug>/edit/delete_org_expenditure/", methods=['POST'])
+def organisation_delete_expenditure(organisation_slug):
+    expenditure_id = request.form['expenditure_id']
+    deleted_expenditure = siorganisation.delete_expenditure(expenditure_id)
+    if deleted_expenditure:
+        return "success"
+    return False
+
 
 @app.route("/<organisation_slug>/edit/new_org_doc/", methods=['POST'])
 def organisation_new_doc(organisation_slug):

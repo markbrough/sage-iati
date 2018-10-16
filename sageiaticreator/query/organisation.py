@@ -42,6 +42,14 @@ def list_org_budgets(organisation_slug):
     ).all()
     return tb
 
+
+def list_org_expenditure(organisation_slug):
+    tb = models.OrgExpenditure.query.filter_by(
+        organisation_slug=organisation_slug
+    ).all()
+    return tb
+
+
 def update_attr(data):
     organisation = models.Organisation.query.filter_by(
         organisation_slug = data['organisation_slug']
@@ -81,7 +89,42 @@ def delete_budget(budget_id):
         db.session.commit()
         return True
     return False
-    
+
+
+def update_expenditure(data):
+    ob = models.OrgExpenditure.query.filter_by(
+        id=data['id']
+    ).first()
+    if data['attr'].endswith('date'):
+        data['value'] = isostring_date(data['value'])
+    setattr(ob, data['attr'], data['value'])
+    db.session.add(ob)
+    db.session.commit()
+    return True
+
+
+def new_expenditure(organisation_slug):
+    nb = models.OrgExpenditure()
+    nb.start_date = datetime.datetime.utcnow()
+    nb.end_date = datetime.datetime.utcnow()
+    nb.value = 0
+    nb.organisation_slug = organisation_slug
+    db.session.add(nb)
+    db.session.commit()
+    return nb.as_dict()
+
+
+def delete_expenditure(expenditure_id):
+    bo = models.OrgExpenditure.query.filter_by(
+        id=expenditure_id
+    ).first()
+    if bo:
+        db.session.delete(bo)
+        db.session.commit()
+        return True
+    return False
+
+
 def list_org_docs(organisation_slug):
     td = models.OrgDoc.query.filter_by(
         organisation_slug = organisation_slug

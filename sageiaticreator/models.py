@@ -30,6 +30,7 @@ class Organisation(db.Model):
     organisation_contact_website = sa.Column(sa.UnicodeText)
     funders = cascade_relationship("OrgFunder")
     budgets = cascade_relationship("OrgBudget")
+    expenditures = cascade_relationship("OrgExpenditure")
     documents = cascade_relationship("OrgDoc")
 
     def as_dict(self):
@@ -47,7 +48,25 @@ class OrgBudget(db.Model):
 
     def as_dict(self):
        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
-    
+
+
+class OrgExpenditure(db.Model):
+    __tablename__ = 'organisationexpenditure'
+    id = sa.Column(sa.Integer, primary_key=True)
+    organisation_slug = sa.Column(
+            sa.ForeignKey('organisation.organisation_slug'),
+            nullable=False)
+    start_date = sa.Column(sa.Date)
+    end_date = sa.Column(sa.Date)
+    value = sa.Column(sa.Float(precision=2))
+
+    def as_dict(self):
+        return {
+            c.name: str(getattr(self, c.name))
+            for c in self.__table__.columns
+        }
+
+
 class OrgDoc(db.Model):
     __tablename__ = 'organisationdoc'
     id = sa.Column(sa.Integer, primary_key=True)

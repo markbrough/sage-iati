@@ -121,7 +121,38 @@ $(".addOrgBudgetBtn").click(function(e) {
     </tr>')
   }).fail(function() {
     alert("Unable to add a new budget!");
-  }); 
+  });
+});
+
+$(".addOrgExpenditureBtn").click(function(e) {
+  e.preventDefault;
+  var data = {'data': 'data'};
+  $.post("new_org_expenditure/", data, function(resultdata) {
+    data = $.parseJSON(resultdata);
+    $("#org-expenditure-form tbody").append(' \
+    <tr data-expenditure-id="' + data['id'] + '"> \
+      <td><div class="form-group"> \
+          <input type="text" class="form-control" name="start_date" \
+          value="' + data['start_date'] + '"> \
+        </div> \
+      </td> \
+      <td><div class="form-group"> \
+          <input type="text" class="form-control" name="end_date" \
+          value="' + data['end_date'] + '"> \
+        </div></td> \
+      <td><div class="form-group"> \
+          <input type="text" class="form-control" name="value" \
+          value="' + data['value'] + '"> \
+        </div></td> \
+      <td> \
+          <a href="" class="deleteOrgExpenditureBtn"> \
+            <span class="glyphicon glyphicon-trash"></span> \
+          </a> \
+        </td> \
+    </tr>')
+  }).fail(function() {
+    alert("Unable to add a new expenditure!");
+  });
 });
 
 $(".addOrgDocBtn").click(function(e) {
@@ -191,7 +222,7 @@ $(document).on("change", "#org-data-form input", function(e) {
     errorFormGroup(input);
   });  
 });
-$(document).on("focus", "#org-budget-form input, #org-doc.form input", function(e) {
+$(document).on("focus", "#org-budget-form input, #org-doc.form input, #org-expenditure-form input", function(e) {
   resetFormGroup(this);
 });
 $(document).on("change", "#org-budget-form input", function(e) {
@@ -206,7 +237,21 @@ $(document).on("change", "#org-budget-form input", function(e) {
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  }); 
+  });
+});
+$(document).on("change", "#org-expenditure-form input", function(e) {
+  var data = {
+    'attr': this.name,
+    'value': this.value,
+    'id': $(this).closest("tr").attr("data-expenditure-id"),
+  }
+  var input = this;
+  resetFormGroup(input);
+  $.post("update_org_expenditure/", data, function(resultdata) {
+    successFormGroup(input);
+  }).fail(function(){
+    errorFormGroup(input);
+  });
 });
 $(document).on("click", ".deleteOrgBudgetBtn", function(e) {
   e.preventDefault();
@@ -218,6 +263,18 @@ $(document).on("click", ".deleteOrgBudgetBtn", function(e) {
     $(tr).fadeOut();
   }).fail(function() {
     alert("Unable to delete that budget!");
+  });
+});
+$(document).on("click", ".deleteOrgExpenditureBtn", function(e) {
+  e.preventDefault();
+  var btn = this;
+  var tr = $(btn).closest("tr");
+  var expenditure_id = $(tr).attr("data-expenditure-id");
+  var data = {'expenditure_id': expenditure_id};
+  $.post("delete_org_expenditure/", data, function(resultdata) {
+    $(tr).fadeOut();
+  }).fail(function() {
+    alert("Unable to delete that expenditure!");
   });
 });
 $(document).on("change", "#org-doc-form input", function(e) {

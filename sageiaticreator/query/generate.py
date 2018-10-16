@@ -310,9 +310,20 @@ def el_total_budget(budget):
     el_b.append(el_with_isodate("period-end", budget.end_date))
     el_val = el_with_text("value", str(budget.value))
     el_val.set("value-date", date_isostring(budget.start_date))
-    el_b.append(el_val)    
+    el_b.append(el_val)
     return el_b
-    
+
+
+def el_total_expenditure(expenditure):
+    el_b = et.Element("total-expenditure")
+    el_b.append(el_with_isodate("period-start", expenditure.start_date))
+    el_b.append(el_with_isodate("period-end", expenditure.end_date))
+    el_val = el_with_text("value", str(expenditure.value))
+    el_val.set("value-date", date_isostring(expenditure.start_date))
+    el_b.append(el_val)
+    return el_b
+
+
 def el_org_doc(document):
     el_d = et.Element("document-link")
     el_d.set("url", document.url)
@@ -345,7 +356,11 @@ def build_organisation(doc, organisation):
     # Total budgets
     for budget in organisation.budgets:
         org.append(el_total_budget(budget))
-        
+
+    # Total expenditure
+    for expenditure in organisation.expenditures:
+        org.append(el_total_expenditure(expenditure))
+
     # Documents
     for document in organisation.documents:
         org.append(el_org_doc(document))

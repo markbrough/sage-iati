@@ -11,6 +11,7 @@
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a></li>
     <li role="presentation"><a href="#budgets" aria-controls="budgets" role="tab" data-toggle="tab">Budgets</a></li>
+    <li role="presentation"><a href="#expenditure" aria-controls="expenditure" role="tab" data-toggle="tab">Expenditure</a></li>
     <li role="presentation"><a href="#docs" aria-controls="docs" role="tab" data-toggle="tab">Documents</a></li>
     <li role="presentation"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding orgs</a></li>
     <li role="presentation"><a href="#privacy" aria-controls="privacy" role="tab" data-toggle="tab">Privacy</a></li>
@@ -112,6 +113,7 @@
         </div>
       </form>
     </div>
+
     <div role="tabpanel" class="tab-pane" id="budgets">
       <h3>Organisation budgets</h3>
       <form id="org-budget-form">
@@ -150,6 +152,47 @@
       </form>
       <a href="#addBudget" class="btn btn-success addOrgBudgetBtn">
         <span class="glyphicon glyphicon-plus"></span> <b>Add budget</b>
+      </a>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="expenditure">
+      <h3>Organisation expenditure</h3>
+      <form id="org-expenditure-form">
+        <table class="table">
+          <thead>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Value</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            {% for expenditure in organisation_expenditure %}
+            <tr data-expenditure-id="{{ expenditure.id }}">
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="start_date"
+                  value="{{ expenditure.start_date }}">
+                </div>
+              </td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="end_date"
+                  value="{{ expenditure.end_date }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="value"
+                  value="{{ expenditure.value }}">
+                </div></td>
+              <td>
+                <a href="" class="deleteOrgExpenditureBtn">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </form>
+      <a href="#" class="btn btn-success addOrgExpenditureBtn">
+        <span class="glyphicon glyphicon-plus"></span> <b>Add expenditure</b>
       </a>
     </div>
 
@@ -203,6 +246,7 @@
         <span class="glyphicon glyphicon-plus"></span> <b>Add document</b>
       </a>
     </div>
+
     <div role="tabpanel" class="tab-pane" id="funding">
       <h2>Funding</h2>
       <table class="table" id="funding-orgs-table">
@@ -232,6 +276,7 @@
         <span class="glyphicon glyphicon-plus"></span> <b>Add funder</b>
       </a>
     </div>
+
     <div role="tabpanel" class="tab-pane" id="privacy">
       <h3>Privacy settings</h3>
       <div class="col-sm-6">
