@@ -113,6 +113,10 @@ $(".addOrgBudgetBtn").click(function(e) {
           <input type="text" class="form-control" name="value" \
           value="' + data['value'] + '"> \
         </div></td> \
+      <td><div class="form-group"> \
+          <input type="text" class="form-control" name="status" \
+          value="' + data['status'] + '"> \
+        </div></td> \
       <td> \
           <a href="" class="deleteOrgBudgetBtn"> \
             <span class="glyphicon glyphicon-trash"></span> \

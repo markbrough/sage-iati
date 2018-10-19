@@ -306,6 +306,7 @@ def el_with_isodate(element_name, iso_date):
 
 def el_total_budget(budget):
     el_b = et.Element("total-budget")
+    el_b.set("status", budget.status)
     el_b.append(el_with_isodate("period-start", budget.start_date))
     el_b.append(el_with_isodate("period-end", budget.end_date))
     el_val = el_with_text("value", str(budget.value))

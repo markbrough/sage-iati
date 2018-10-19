@@ -45,6 +45,7 @@ class OrgBudget(db.Model):
     start_date = sa.Column(sa.Date)
     end_date = sa.Column(sa.Date)
     value = sa.Column(sa.Float(precision=2))
+    status = sa.Column(sa.UnicodeText)
 
     def as_dict(self):
        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}

@@ -75,6 +75,7 @@ def new_budget(organisation_slug):
     nb.start_date = datetime.datetime.utcnow()
     nb.end_date = datetime.datetime.utcnow()
     nb.value = 0
+    nb.status = 1
     nb.organisation_slug = organisation_slug
     db.session.add(nb)
     db.session.commit()

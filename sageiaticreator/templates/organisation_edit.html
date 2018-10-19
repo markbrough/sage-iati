@@ -122,6 +122,7 @@
             <th>Start date</th>
             <th>End date</th>
             <th>Value</th>
+            <th>Status</th>
             <th>Delete</th>
           </thead>
           <tbody>
@@ -139,6 +140,10 @@
               <td><div class="form-group">
                   <input type="text" class="form-control" name="value"
                   value="{{ budget.value }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="status"
+                  value="{{ budget.status }}">
                 </div></td>
               <td>
                 <a href="" class="deleteOrgBudgetBtn">
