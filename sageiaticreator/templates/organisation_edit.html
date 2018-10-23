@@ -123,7 +123,7 @@
             <th>End date</th>
             <th>Value</th>
             <th>Status</th>
-            <th>Delete</th>
+            <th>Actions</th>
           </thead>
           <tbody>
             {% for budget in organisation_budgets %}
@@ -146,11 +146,33 @@
                   value="{{ budget.status }}">
                 </div></td>
               <td>
-                <a href="" class="deleteOrgBudgetBtn">
-                  <span class="glyphicon glyphicon-trash"></span>
-                </a>
+                <a href="#" title="Delete budget" class="deleteOrgBudgetBtn"><span class="glyphicon glyphicon-trash"></span></a>
+                &nbsp;
+                <a href="#" title="Add budget line" class="addOrgBudgetLineBtn"><span class="glyphicon glyphicon-plus"></span></a>
               </td>
             </tr>
+            {% for budgetline in budget.budget_lines %}
+            <tr data-budgetline-id="{{ budgetline.id }}">
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="ref"
+                  value="{{ budgetline.ref }}">
+                </div>
+              </td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="description"
+                  value="{{ budgetline.description }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="value"
+                  value="{{ budgetline.value }}">
+                </div></td>
+              <td></td>
+              <td>
+                <a href="#" title="Delete budget line" class="deleteOrgBudgetLineBtn"><span class="glyphicon glyphicon-trash"></span></a>
+                &nbsp;
+              </td>
+            </tr>
+            {% endfor %}
             {% endfor %}
           </tbody>
         </table>
@@ -168,7 +190,7 @@
             <th>Start date</th>
             <th>End date</th>
             <th>Value</th>
-            <th>Delete</th>
+            <th>Actions</th>
           </thead>
           <tbody>
             {% for expenditure in organisation_expenditure %}
@@ -187,11 +209,32 @@
                   value="{{ expenditure.value }}">
                 </div></td>
               <td>
-                <a href="" class="deleteOrgExpenditureBtn">
-                  <span class="glyphicon glyphicon-trash"></span>
-                </a>
+                <a href="#" title="Delete expenditure" class="deleteOrgExpenditureBtn"><span class="glyphicon glyphicon-trash"></span></a>
+                &nbsp;
+                <a href="#" title="Add expenditure line" class="addOrgExpenditureLineBtn"><span class="glyphicon glyphicon-plus"></span></a>
               </td>
             </tr>
+            {% for expenditureline in expenditure.expenditure_lines %}
+            <tr data-expenditureline-id="{{ expenditureline.id }}">
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="ref"
+                  value="{{ expenditureline.ref }}">
+                </div>
+              </td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="description"
+                  value="{{ expenditureline.description }}">
+                </div></td>
+              <td><div class="form-group">
+                  <input type="text" class="form-control" name="value"
+                  value="{{ expenditureline.value }}">
+                </div></td>
+              <td>
+                <a href="#" title="Delete expenditure line" class="deleteOrgExpenditureLineBtn"><span class="glyphicon glyphicon-trash"></span></a>
+                &nbsp;
+              </td>
+            </tr>
+            {% endfor %}
             {% endfor %}
           </tbody>
         </table>

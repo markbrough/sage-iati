@@ -14,13 +14,14 @@ act_ForeignKey = ft.partial(
     ondelete="CASCADE"
 )
 
+
 class Organisation(db.Model):
     __tablename__ = 'organisation'
     organisation_name = sa.Column(sa.UnicodeText)
     organisation_ref = sa.Column(sa.UnicodeText)
     organisation_type = sa.Column(sa.UnicodeText)
     organisation_slug = sa.Column(sa.UnicodeText,
-                            primary_key=True)
+                                  primary_key=True)
     organisation_default_currency = sa.Column(sa.UnicodeText)
     organisation_default_language = sa.Column(sa.UnicodeText)
     organisation_contact_name = sa.Column(sa.UnicodeText)
@@ -34,7 +35,8 @@ class Organisation(db.Model):
     documents = cascade_relationship("OrgDoc")
 
     def as_dict(self):
-       return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
 
 class OrgBudget(db.Model):
     __tablename__ = 'organisationbudget'
@@ -46,9 +48,27 @@ class OrgBudget(db.Model):
     end_date = sa.Column(sa.Date)
     value = sa.Column(sa.Float(precision=2))
     status = sa.Column(sa.UnicodeText)
+    budget_lines = cascade_relationship("OrgBudgetLine")
 
     def as_dict(self):
        return {c.name: str(getattr(self, c.name)) for c in self.__table__.columns}
+
+
+class OrgBudgetLine(db.Model):
+    __tablename__ = 'organisationbudgetline'
+    id = sa.Column(sa.Integer, primary_key=True)
+    budget_id = sa.Column(
+            sa.ForeignKey('organisationbudget.id'),
+            nullable=False)
+    value = sa.Column(sa.Float(precision=2))
+    ref = sa.Column(sa.UnicodeText)
+    description = sa.Column(sa.UnicodeText)
+
+    def as_dict(self):
+        return {
+            c.name: str(getattr(self, c.name))
+            for c in self.__table__.columns
+        }
 
 
 class OrgExpenditure(db.Model):
@@ -60,6 +80,24 @@ class OrgExpenditure(db.Model):
     start_date = sa.Column(sa.Date)
     end_date = sa.Column(sa.Date)
     value = sa.Column(sa.Float(precision=2))
+    expenditure_lines = cascade_relationship("OrgExpenditureLine")
+
+    def as_dict(self):
+        return {
+            c.name: str(getattr(self, c.name))
+            for c in self.__table__.columns
+        }
+
+
+class OrgExpenditureLine(db.Model):
+    __tablename__ = 'organisationexpenditureline'
+    id = sa.Column(sa.Integer, primary_key=True)
+    expenditure_id = sa.Column(
+            sa.ForeignKey('organisationexpenditure.id'),
+            nullable=False)
+    value = sa.Column(sa.Float(precision=2))
+    ref = sa.Column(sa.UnicodeText)
+    description = sa.Column(sa.UnicodeText)
 
     def as_dict(self):
         return {

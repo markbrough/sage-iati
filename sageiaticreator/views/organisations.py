@@ -94,12 +94,14 @@ def organisation_edit_budget(organisation_slug):
         return "success"
     return "error"
 
+
 @app.route("/<organisation_slug>/edit/new_org_budget/", methods=['POST'])
 def organisation_new_budget(organisation_slug):
     new_budget = siorganisation.new_budget(organisation_slug)
     if new_budget:
         return json.dumps(new_budget)
     return "error"
+
 
 @app.route("/<organisation_slug>/edit/delete_org_budget/", methods=['POST'])
 def organisation_delete_budget(organisation_slug):
@@ -110,7 +112,42 @@ def organisation_delete_budget(organisation_slug):
     return False
 
 
-@app.route("/<organisation_slug>/edit/update_org_expenditure/", methods=['POST'])
+@app.route("/<organisation_slug>/edit/update_org_budgetline/",
+           methods=['POST'])
+def organisation_edit_budgetline(organisation_slug):
+    data = {
+        'attr': request.form['attr'],
+        'value': request.form['value'],
+        'id': request.form['id'],
+    }
+    update_status = siorganisation.update_budgetline(data)
+    if update_status:
+        return "success"
+    return "error"
+
+
+@app.route("/<organisation_slug>/edit/new_org_budgetline/",
+           methods=['POST'])
+def organisation_new_budgetline(organisation_slug):
+    budget_id = request.form['budget_id']
+    new_budgetline = siorganisation.new_budgetline(budget_id)
+    if new_budgetline:
+        return json.dumps(new_budgetline)
+    return "error"
+
+
+@app.route("/<organisation_slug>/edit/delete_org_budgetline/",
+           methods=['POST'])
+def organisation_delete_budgetline(organisation_slug):
+    budgetline_id = request.form['budgetline_id']
+    deleted_budgetline = siorganisation.delete_budgetline(budgetline_id)
+    if deleted_budgetline:
+        return "success"
+    return False
+
+
+@app.route("/<organisation_slug>/edit/update_org_expenditure/",
+           methods=['POST'])
 def organisation_edit_expenditure(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -130,11 +167,47 @@ def organisation_new_expenditure(organisation_slug):
     return "error"
 
 
-@app.route("/<organisation_slug>/edit/delete_org_expenditure/", methods=['POST'])
+@app.route("/<organisation_slug>/edit/delete_org_expenditure/",
+           methods=['POST'])
 def organisation_delete_expenditure(organisation_slug):
     expenditure_id = request.form['expenditure_id']
     deleted_expenditure = siorganisation.delete_expenditure(expenditure_id)
     if deleted_expenditure:
+        return "success"
+    return False
+
+
+@app.route("/<organisation_slug>/edit/update_org_expenditureline/",
+           methods=['POST'])
+def organisation_edit_expenditureline(organisation_slug):
+    data = {
+        'attr': request.form['attr'],
+        'value': request.form['value'],
+        'id': request.form['id'],
+    }
+    update_status = siorganisation.update_expenditureline(data)
+    if update_status:
+        return "success"
+    return "error"
+
+
+@app.route("/<organisation_slug>/edit/new_org_expenditureline/",
+           methods=['POST'])
+def organisation_new_expenditureline(organisation_slug):
+    expenditure_id = request.form['expenditure_id']
+    new_expenditureline = siorganisation.new_expenditureline(expenditure_id)
+    if new_expenditureline:
+        return json.dumps(new_expenditureline)
+    return "error"
+
+
+@app.route("/<organisation_slug>/edit/delete_org_expenditureline/",
+           methods=['POST'])
+def organisation_delete_expenditureline(organisation_slug):
+    expenditureline_id = request.form['expenditureline_id']
+    deleted_expenditureline = siorganisation.delete_expenditureline(
+        expenditureline_id)
+    if deleted_expenditureline:
         return "success"
     return False
 

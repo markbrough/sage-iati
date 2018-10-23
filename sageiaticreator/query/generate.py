@@ -312,6 +312,14 @@ def el_total_budget(budget):
     el_val = el_with_text("value", str(budget.value))
     el_val.set("value-date", date_isostring(budget.start_date))
     el_b.append(el_val)
+    for budget_line in budget.budget_lines:
+        el_bl = et.Element("budget-line")
+        el_bl.set("ref", budget_line.ref)
+        el_bl_val = el_with_text("value", '{:.2f}'.format(budget_line.value))
+        el_bl_val.set("value-date", date_isostring(budget.start_date))
+        el_bl.append(el_bl_val)
+        el_bl.append(el_with_text("narrative", budget_line.description))
+        el_b.append(el_bl)
     return el_b
 
 
@@ -322,6 +330,14 @@ def el_total_expenditure(expenditure):
     el_val = el_with_text("value", str(expenditure.value))
     el_val.set("value-date", date_isostring(expenditure.start_date))
     el_b.append(el_val)
+    for expenditure_line in expenditure.expenditure_lines:
+        el_exl = et.Element("expenditure-line")
+        el_exl.set("ref", expenditure_line.ref)
+        el_exl_val = el_with_text("value", '{:.2f}'.format(expenditure_line.value))
+        el_exl_val.set("value-date", date_isostring(expenditure.start_date))
+        el_exl.append(el_exl_val)
+        el_exl.append(el_with_text("narrative", expenditure_line.description))
+        el_b.append(el_exl)
     return el_b
 
 
