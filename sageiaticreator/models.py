@@ -5,8 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 cascade_relationship = ft.partial(
     sa.orm.relationship,
-    cascade="all,delete",
-    passive_deletes=True,
+    cascade="all, delete-orphan",
 )
 
 act_ForeignKey = ft.partial(
