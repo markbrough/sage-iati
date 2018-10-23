@@ -95,8 +95,7 @@ $("#addFunderBtn").click(function(e){
 
 $(".addOrgBudgetBtn").click(function(e) {
   e.preventDefault;
-  var data = {'data': 'data'};
-  $.post("new_org_budget/", data, function(resultdata) {
+  $.post("new_org_budget/", function(resultdata) {
     data = $.parseJSON(resultdata);
     $("#org-budget-form tbody").append(' \
     <tr data-budget-id="' + data['id'] + '"> \
@@ -130,8 +129,7 @@ $(".addOrgBudgetBtn").click(function(e) {
 
 $(".addOrgExpenditureBtn").click(function(e) {
   e.preventDefault;
-  var data = {'data': 'data'};
-  $.post("new_org_expenditure/", data, function(resultdata) {
+  $.post("new_org_expenditure/", function(resultdata) {
     data = $.parseJSON(resultdata);
     $("#org-expenditure-form tbody").append(' \
     <tr data-expenditure-id="' + data['id'] + '"> \
@@ -161,8 +159,7 @@ $(".addOrgExpenditureBtn").click(function(e) {
 
 $(".addOrgDocBtn").click(function(e) {
   e.preventDefault;
-  var data = {'data': 'data'};
-  $.post("new_org_doc/", data, function(resultdata) {
+  $.post("new_org_doc/", function(resultdata) {
     data = $.parseJSON(resultdata);
     $("#org-doc-form tbody").append(' \
     <tr data-doc-id="' + data['id'] + '"> \
