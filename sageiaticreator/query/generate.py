@@ -126,7 +126,7 @@ def build_transaction(transaction_data):
 
     tvalue = et.Element("value")
     t.append(tvalue)
-    tvalue.text = unicode(transaction_value)
+    tvalue.text = '{.2f}'.format(transaction_value)
     tvalue.set("value-date", transaction_date)
 
     t.append(el_with_narrative("description", transaction_description))
@@ -299,17 +299,19 @@ def generate_iati_activity_data(jsondata, organisation_slug):
     doc = et.ElementTree(doc)
     return doc
 
+
 def el_with_isodate(element_name, iso_date):
     el = et.Element(element_name)
     el.set("iso-date", date_isostring(iso_date))
     return el
+
 
 def el_total_budget(budget):
     el_b = et.Element("total-budget")
     el_b.set("status", budget.status)
     el_b.append(el_with_isodate("period-start", budget.start_date))
     el_b.append(el_with_isodate("period-end", budget.end_date))
-    el_val = el_with_text("value", str(budget.value))
+    el_val = el_with_text("value", '{:.2f}'.format(budget.value))
     el_val.set("value-date", date_isostring(budget.start_date))
     el_b.append(el_val)
     for budget_line in budget.budget_lines:
@@ -327,7 +329,7 @@ def el_total_expenditure(expenditure):
     el_b = et.Element("total-expenditure")
     el_b.append(el_with_isodate("period-start", expenditure.start_date))
     el_b.append(el_with_isodate("period-end", expenditure.end_date))
-    el_val = el_with_text("value", str(expenditure.value))
+    el_val = el_with_text("value", '{:.2f}'.format(expenditure.value))
     el_val.set("value-date", date_isostring(expenditure.start_date))
     el_b.append(el_val)
     for expenditure_line in expenditure.expenditure_lines:
