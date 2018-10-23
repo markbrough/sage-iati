@@ -333,7 +333,7 @@ def el_total_expenditure(expenditure):
     el_val.set("value-date", date_isostring(expenditure.start_date))
     el_b.append(el_val)
     for expenditure_line in expenditure.expenditure_lines:
-        el_exl = et.Element("expenditure-line")
+        el_exl = et.Element("expense-line")
         el_exl.set("ref", expenditure_line.ref)
         el_exl_val = el_with_text("value", '{:.2f}'.format(expenditure_line.value))
         el_exl_val.set("value-date", date_isostring(expenditure.start_date))
