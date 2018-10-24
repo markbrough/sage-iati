@@ -43,7 +43,8 @@ def correct_dept(department, activities):
 
 def redact(description, excluded_strings):
     exclusions = '|'.join(excluded_strings)
-    redacted_description = re.sub(exclusions, "*", description)
+    redact_re = r'(^| )({})( |$)'.format(exclusions)
+    redacted_description = re.sub(redact_re, r'\1*\3', description)
     if redacted_description != description:
         return True, redacted_description
     return False, description
