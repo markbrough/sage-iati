@@ -126,7 +126,7 @@ def build_transaction(transaction_data):
 
     tvalue = et.Element("value")
     t.append(tvalue)
-    tvalue.text = '{.2f}'.format(transaction_value)
+    tvalue.text = '{:.2f}'.format(transaction_value)
     tvalue.set("value-date", transaction_date)
 
     t.append(el_with_narrative("description", transaction_description))
