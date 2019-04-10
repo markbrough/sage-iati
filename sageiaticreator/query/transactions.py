@@ -182,7 +182,7 @@ def get_sheet_data(organisation_slug, file):
             if an != "" and ad != "":
                 account_number = an
                 account_description = ad
-                continue
+            continue
 
         # Ignore header rows and blank rows
         if str(cv).startswith("No") or (cv == ""):
