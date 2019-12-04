@@ -35,7 +35,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def correct_dept(department, activities):
-    dept = unicode(int(department))
+    dept = str(int(department))
     if dept not in activities:
         #FIXME allow activities to specify default; for now just put
         # everything in the highest number activity
