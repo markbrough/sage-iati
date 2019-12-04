@@ -1,5 +1,6 @@
-from sageiaticreator import db, models
-import organisation as siorganisation
+from sageiaticreator.extensions import db
+from sageiaticreator import models
+from sageiaticreator.query import organisation as siorganisation
 import normality
 import datetime, time
 
