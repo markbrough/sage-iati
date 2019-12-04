@@ -93,7 +93,6 @@ def add_indicator_period(data, indicator_id, commit=True):
     return p
 
 def add_indicator(data, result_id, commit=True):
-    print "indicator"
     i = models.ActivityResultIndicator()
     i.indicator_title = data.get('indicator_title')
     i.indicator_description = data.get('indicator_description')
@@ -140,7 +139,6 @@ def add_result_data(activity_id, data):
         if k.endswith('year'):
             v = isostring_year(v)
         setattr(r, k, v)
-    print "Adding"
     db.session.add(r)
     db.session.commit()
     return r
