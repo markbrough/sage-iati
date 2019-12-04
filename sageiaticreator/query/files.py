@@ -77,10 +77,10 @@ def publish_file(file_id, organisation_slug):
         ).all()
 
     for otherfile in otherfiles:
-        print "Printing otherfiles"
+        print("Printing otherfiles")
         otherfile.file_published = 0
-        print otherfile.id
-        print otherfile.file_published
+        print(otherfile.id)
+        print(otherfile.file_published)
         db.session.add(otherfile)
     db.session.commit()
     orgfile.file_published = 1
