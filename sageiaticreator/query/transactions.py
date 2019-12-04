@@ -1,4 +1,6 @@
-from sageiaticreator import app, db, models
+from flask import current_app
+from sageiaticreator.extensions import db
+from sageiaticreator import models
 from sageiaticreator.query import organisation as siorganisation
 from sageiaticreator.query import activity as siactivity
 import xlrd
