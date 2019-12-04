@@ -17,7 +17,7 @@ def create_activity(data):
     # dict so they don't attempt to be re-set below...
     act.start_date = isostring_date(data.pop("start_date"))
     act.end_date = isostring_date(data.pop("end_date"))
-    
+
     for attr, val in data.items():
         setattr(act, attr, val)
     db.session.add(act)
@@ -46,7 +46,7 @@ def update_attr(data):
     db.session.add(activity)
     db.session.commit()
     return True
-    
+
 def update_result_attr(data):
     result = models.ActivityResult.query.filter_by(
         id = data['id']
@@ -55,7 +55,7 @@ def update_result_attr(data):
     db.session.add(result)
     db.session.commit()
     return result
-    
+
 def update_indicator_attr(data):
     indicator = models.ActivityResultIndicator.query.filter_by(
         id = data['id']
@@ -66,7 +66,7 @@ def update_indicator_attr(data):
     db.session.add(indicator)
     db.session.commit()
     return indicator
-    
+
 def update_indicator_period_attr(data):
     period = models.ActivityResultIndicatorPeriod.query.filter_by(
         id = data['id']
@@ -77,7 +77,7 @@ def update_indicator_period_attr(data):
     db.session.add(period)
     db.session.commit()
     return period
-    
+
 def add_indicator_period(data, indicator_id, commit=True):
     p = models.ActivityResultIndicatorPeriod()
     p.period_start = isostring_date(data.get("period_start"))
@@ -90,7 +90,7 @@ def add_indicator_period(data, indicator_id, commit=True):
     db.session.add(p)
     db.session.commit()
     return p
-    
+
 def add_indicator(data, result_id, commit=True):
     print "indicator"
     i = models.ActivityResultIndicator()
@@ -102,10 +102,10 @@ def add_indicator(data, result_id, commit=True):
     db.session.add(i)
     db.session.commit()
     if data.get("periods"):
-        [add_indicator_period(period, i.id, False) for 
+        [add_indicator_period(period, i.id, False) for
                               period in data['periods']]
     return i
-    
+
 def add_result(data, activity_id, organisation_slug, commit=True):
     r = models.ActivityResult()
     r.result_title = data.get('result_title')
@@ -116,14 +116,14 @@ def add_result(data, activity_id, organisation_slug, commit=True):
     db.session.add(r)
     db.session.commit()
     if data.get("indicators"):
-        [add_indicator(indicator, r.id, False) for 
+        [add_indicator(indicator, r.id, False) for
                        indicator in data['indicators']]
     return r
 
 def add_results_data(results, activity_id, organisation_slug):
-    [add_result(result, activity_id, organisation_slug, 
+    [add_result(result, activity_id, organisation_slug,
                 False) for result in results]
-                
+
 def add_result_data(activity_id, data):
     if data['type'] == "result":
         r = models.ActivityResult()
@@ -132,7 +132,7 @@ def add_result_data(activity_id, data):
         r = models.ActivityResultIndicator()
     elif data['type'] == "period":
         r = models.ActivityResultIndicatorPeriod()
-        
+
     for k, v in data.items():
         if k.startswith('period'):
             v = isostring_date(v)
@@ -143,7 +143,7 @@ def add_result_data(activity_id, data):
     db.session.add(r)
     db.session.commit()
     return r
-                
+
 def delete_result_data(data):
     if data['result_type'] == "result":
         r = models.ActivityResult.query.filter_by(

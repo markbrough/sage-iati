@@ -33,7 +33,7 @@
         <div class="form-group">
           <label for="description" class="col-sm-2 control-label">Desciption</label>
           <div class="col-sm-10">
-            <textarea name="description" id="description" 
+            <textarea name="description" id="description"
             class="form-control" rows="5">{{ activity.description }}</textarea>
           </div>
         </div>
@@ -73,7 +73,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="activity_status" class="col-sm-2 
+          <label for="activity_status" class="col-sm-2
           control-label">Activity Status</label>
           <div class="col-sm-10">
             <input type="text" name="activity_status" id="activity_status"
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="recipient_country" class="col-sm-2 
+          <label for="recipient_country" class="col-sm-2
           control-label">Recipient Country</label>
           <div class="col-sm-10">
             <input type="checkbox" name="recipient_country" id="recipient_country"
@@ -90,16 +90,16 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="recipient_country_code" class="col-sm-2 
+          <label for="recipient_country_code" class="col-sm-2
           control-label">Recipient Country Code</label>
-          <div class="col-sm-10">      
+          <div class="col-sm-10">
             <input type="text" name="recipient_country_code" id="recipient_country_code"
             value="{{ activity.recipient_country_code }}" class="form-control"
             {% if not activity.recipient_country %} disabled{% endif %}>
           </div>
         </div>
         <div class="form-group">
-          <label for="recipient_region" class="col-sm-2 
+          <label for="recipient_region" class="col-sm-2
           control-label">Recipient Region</label>
           <div class="col-sm-10">
             <input type="checkbox" name="recipient_region" id="recipient_region"
@@ -108,9 +108,9 @@
           </div>
         </div>
         <div class="form-group">
-          <label for="recipient_region_code" class="col-sm-2 
+          <label for="recipient_region_code" class="col-sm-2
           control-label">Recipient Region Code</label>
-          <div class="col-sm-10">      
+          <div class="col-sm-10">
             <input type="text" name="recipient_region_code" id="recipient_region_code"
             value="{{ activity.recipient_region_code }}" class="form-control"
             {% if not activity.recipient_region %} disabled{% endif %}>
@@ -118,8 +118,8 @@
         </div>
       </form>
     </div>
-    
-    
+
+
     <!-- Results data -->
     <div role="tabpanel" class="tab-pane" id="results">
       <h2>Results</h2>
@@ -136,7 +136,7 @@
           </a>
         </div>
         <h3>Result</h3>
-        <form class="form-horizontal from-result result-data-form" 
+        <form class="form-horizontal from-result result-data-form"
           id="result-{{result.id}}" data-id="{{ result.id }}"
           data-result-form="result">
           <div class="form-group">
@@ -149,7 +149,7 @@
           <div class="form-group">
             <label for="result_description" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
-              <textarea name="result_description" id="result_description" 
+              <textarea name="result_description" id="result_description"
               class="form-control" placeholder="description">{{ result.result_description }}</textarea>
             </div>
           </div>
@@ -157,7 +157,7 @@
             <label for="result_type" class="col-sm-2 control-label">Type</label>
             <div class="col-sm-10">
               <input type="text" name="result_type" id="result_type"
-              placeholder="result type" class="form-control" 
+              placeholder="result type" class="form-control"
               value="{{ result.result_type }}">
             </div>
           </div>
@@ -177,45 +177,45 @@
               </a>
             </div>
             <h3>Indicator</h3>
-            <form class="form-horizontal form-indicator result-data-form" 
-            id="indicator-{{ indicator.id }}" 
+            <form class="form-horizontal form-indicator result-data-form"
+            id="indicator-{{ indicator.id }}"
             data-id="{{ indicator.id }}" data-result-form="indicator">
               <div class="form-group">
                 <label for="indicator_title" class="col-sm-2 control-label">Title</label>
                 <div class="col-sm-10">
                   <input type="text" name="indicator_title" id="indicator_title"
-                  class="form-control" placeholder="title" 
+                  class="form-control" placeholder="title"
                   value="{{ indicator.indicator_title }}">
                 </div>
               </div>
               <div class="form-group">
                 <label for="indicator_description" class="col-sm-2 control-label">Description</label>
                 <div class="col-sm-10">
-                  <textarea name="indicator_description" id="indicator_description" 
-                  class="form-control" 
+                  <textarea name="indicator_description" id="indicator_description"
+                  class="form-control"
                   placeholder="description">{{ indicator.indicator_description }}</textarea>
                 </div>
               </div>
               <div class="form-group">
                 <label for="baseline_year" class="col-sm-2 control-label">Baseline year</label>
                 <div class="col-sm-10">
-                  <input type="text" name="baseline_year" id="baseline_year" 
-                  class="form-control" placeholder="yyyy" 
+                  <input type="text" name="baseline_year" id="baseline_year"
+                  class="form-control" placeholder="yyyy"
                   value="{{ indicator.baseline_year }}" />
                 </div>
               </div>
               <div class="form-group">
                 <label for="baseline_value" class="col-sm-2 control-label">Baseline value</label>
                 <div class="col-sm-10">
-                  <input type="text" name="baseline_value" id="baseline_value" 
-                  class="form-control" placeholder="baseline value" 
+                  <input type="text" name="baseline_value" id="baseline_value"
+                  class="form-control" placeholder="baseline value"
                   value="{{ indicator.baseline_value }}"  />
                 </div>
               </div>
               <div class="form-group">
                 <label for="baseline_comment" class="col-sm-2 control-label">Baseline comment</label>
                 <div class="col-sm-10">
-                  <textarea name="baseline_comment" id="baseline_comment" 
+                  <textarea name="baseline_comment" id="baseline_comment"
                   class="form-control" placeholder="comments...">{{ indicator.baseline_comment }}</textarea>
                 </div>
               </div>
@@ -235,14 +235,14 @@
                 </a>
               </div>
               <h3>Period</h3>
-              <form class="form-horizontal form-period result-data-form" 
-              id="period-{{period.id}}" data-id="{{period.id}}" 
+              <form class="form-horizontal form-period result-data-form"
+              id="period-{{period.id}}" data-id="{{period.id}}"
               data-result-form="period">
                 <div class="form-group">
                   <label for="period_start" class="col-sm-2 control-label">Period start</label>
                   <div class="col-sm-10">
                     <input type="text" name="period_start" id="period_start"
-                    class="form-control" placeholder="yyyy-mm-dd" 
+                    class="form-control" placeholder="yyyy-mm-dd"
                     value="{{ period.period_start }}">
                   </div>
                 </div>
@@ -250,14 +250,14 @@
                   <label for="period_end" class="col-sm-2 control-label">Period end</label>
                   <div class="col-sm-10">
                     <input type="text" name="period_end" id="period_end"
-                    class="form-control" placeholder="yyyy-mm-dd" 
+                    class="form-control" placeholder="yyyy-mm-dd"
                     value="{{ period.period_end }}">
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="target_value" class="col-sm-2 control-label">Target value</label>
                   <div class="col-sm-10">
-                    <input type="text" name="target_value" id="target_value" 
+                    <input type="text" name="target_value" id="target_value"
                     class="form-control" placeholder="value"
                      value="{{ period.target_value }}" />
                   </div>
@@ -265,21 +265,21 @@
                 <div class="form-group">
                   <label for="target_comment" class="col-sm-2 control-label">Target comment</label>
                   <div class="col-sm-10">
-                    <textarea name="target_comment" id="target_comment" 
+                    <textarea name="target_comment" id="target_comment"
                     class="form-control" placeholder="comments...">{{ period.target_comment }}</textarea>
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="actual_value" class="col-sm-2 control-label">Actual value</label>
                   <div class="col-sm-10">
-                    <input type="text" name="actual_value" id="actual_value" 
+                    <input type="text" name="actual_value" id="actual_value"
                     class="form-control" placeholder="value" value="{{ period.actual_value }}" />
                   </div>
                 </div>
                 <div class="form-group">
                   <label for="actual_comment" class="col-sm-2 control-label">Actual comment</label>
                   <div class="col-sm-10">
-                    <textarea name="actual_comment" id="actual_comment" 
+                    <textarea name="actual_comment" id="actual_comment"
                     class="form-control" placeholder="comments...">{{ period.actual_comment }}</textarea>
                   </div>
                 </div>
@@ -298,7 +298,7 @@
 </div>
 
 <!-- Add result modal -->
-<div class="modal fade" id="addResultModal" tabindex="-1" 
+<div class="modal fade" id="addResultModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -320,7 +320,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="form-group">
             <label for="result_description" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
-              <textarea name="result_description" id="result_description" 
+              <textarea name="result_description" id="result_description"
               class="form-control" placeholder="description"></textarea>
             </div>
           </div>
@@ -345,7 +345,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
 
 <!-- Add indicator modal -->
-<div class="modal fade" id="addIndicatorModal" tabindex="-1" 
+<div class="modal fade" id="addIndicatorModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -368,29 +368,29 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="form-group">
             <label for="indicator_description" class="col-sm-2 control-label">Description</label>
             <div class="col-sm-10">
-              <textarea name="indicator_description" id="indicator_description" 
-              class="form-control" 
+              <textarea name="indicator_description" id="indicator_description"
+              class="form-control"
               placeholder="description"></textarea>
             </div>
           </div>
           <div class="form-group">
             <label for="baseline_year" class="col-sm-2 control-label">Baseline year</label>
             <div class="col-sm-10">
-              <input type="text" name="baseline_year" id="baseline_year" 
+              <input type="text" name="baseline_year" id="baseline_year"
               class="form-control" placeholder="yyyy"/>
             </div>
           </div>
           <div class="form-group">
             <label for="baseline_value" class="col-sm-2 control-label">Baseline value</label>
             <div class="col-sm-10">
-              <input type="text" name="baseline_value" id="baseline_value" 
+              <input type="text" name="baseline_value" id="baseline_value"
               class="form-control" placeholder="baseline value"/>
             </div>
           </div>
           <div class="form-group">
             <label for="baseline_comment" class="col-sm-2 control-label">Baseline comment</label>
             <div class="col-sm-10">
-              <textarea name="baseline_comment" id="baseline_comment" 
+              <textarea name="baseline_comment" id="baseline_comment"
               class="form-control" placeholder="comments..."></textarea>
             </div>
           </div>
@@ -408,7 +408,7 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 </div>
 
 <!-- Add period modal -->
-<div class="modal fade" id="addPeriodModal" tabindex="-1" 
+<div class="modal fade" id="addPeriodModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -438,28 +438,28 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="form-group">
             <label for="target_value" class="col-sm-2 control-label">Target value</label>
             <div class="col-sm-10">
-              <input type="text" name="target_value" id="target_value" 
+              <input type="text" name="target_value" id="target_value"
               class="form-control" placeholder="value"/>
             </div>
           </div>
           <div class="form-group">
             <label for="target_comment" class="col-sm-2 control-label">Target comment</label>
             <div class="col-sm-10">
-              <textarea name="target_comment" id="target_comment" 
+              <textarea name="target_comment" id="target_comment"
               class="form-control" placeholder="comments..."></textarea>
             </div>
           </div>
           <div class="form-group">
             <label for="actual_value" class="col-sm-2 control-label">Actual value</label>
             <div class="col-sm-10">
-              <input type="text" name="actual_value" id="actual_value" 
+              <input type="text" name="actual_value" id="actual_value"
               class="form-control" placeholder="value" />
             </div>
           </div>
           <div class="form-group">
             <label for="actual_comment" class="col-sm-2 control-label">Actual comment</label>
             <div class="col-sm-10">
-              <textarea name="actual_comment" id="actual_comment" 
+              <textarea name="actual_comment" id="actual_comment"
               class="form-control" placeholder="comments..."></textarea>
             </div>
           </div>

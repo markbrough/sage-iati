@@ -35,10 +35,10 @@
         <div id="navbar" class="collapse navbar-collapse">
         {% if organisation %}
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{url_for('organisation_dashboard', 
+            <li class="active"><a href="{{url_for('organisation_dashboard',
               organisation_slug=organisation.organisation_slug )}}">
               {{ organisation.organisation_name }}</a></li>
-            <li><a href="{{url_for('organisation_edit', 
+            <li><a href="{{url_for('organisation_edit',
               organisation_slug=organisation.organisation_slug )}}">Edit organisation data</a></li>
           </ul>
           {% endif %}
@@ -54,7 +54,7 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
-    
+
 
   <div class="container">
     {% with messages = get_flashed_messages(with_categories=true) %}

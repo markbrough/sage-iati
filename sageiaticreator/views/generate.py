@@ -1,7 +1,7 @@
 from flask import Flask, render_template, flash, request, Markup, \
     session, redirect, url_for, escape, Response, abort, send_file, jsonify
 from flask.ext.login import login_required, current_user
-                            
+
 from sageiaticreator import app, db, models
 from sageiaticreator.query import user as quser
 from sageiaticreator.query import organisation as siorganisation
@@ -42,7 +42,7 @@ def get_file(organisation_slug, file_id):
     return Response(xmlfile.read(),
                     mimetype="text/xml")
 
-@app.route("/<organisation_slug>/transactions_preview/", 
+@app.route("/<organisation_slug>/transactions_preview/",
     methods=["POST", "GET"])
 def transactions_preview(organisation_slug):
     if request.method != "POST":
@@ -67,7 +67,7 @@ def transactions_preview(organisation_slug):
     transactions = sitransactions.parse_transactions(
         organisation_slug,
         file)
-    
+
     return render_template("transactions_preview.html",
                 organisation = organisation,
                 organisation_budgets = organisation_budgets,
@@ -78,13 +78,13 @@ def transactions_preview(organisation_slug):
                 jsondata = str(json.dumps(transactions)),
                 loggedinuser=current_user
                           )
-                          
-@app.route("/<organisation_slug>/transactions_preview/generate_iati_data/", 
+
+@app.route("/<organisation_slug>/transactions_preview/generate_iati_data/",
     methods=["POST", "GET"])
 def generate_iati_data(organisation_slug):
     if request.method == "POST":
         jsondata = json.loads(request.form['jsondata'])
-        
+
         activity_xml = sigenerate.generate_iati_activity_data(
                             jsondata,
                             organisation_slug
@@ -92,21 +92,21 @@ def generate_iati_data(organisation_slug):
         # Make a new OrgConvertedFile
         file_type = sifiles.get_file_type_by_name("Activity").code
         newfile_obj = sifiles.create_file(file_type, organisation_slug)
-        
+
         full_new_file_path = os.path.join(DATA_STORAGE_DIR,
                                           newfile_obj.file_name)
-        activity_xml.write(full_new_file_path, 
-                           encoding="UTF-8", 
-                           pretty_print = True, 
+        activity_xml.write(full_new_file_path,
+                           encoding="UTF-8",
+                           pretty_print = True,
                            xml_declaration=True)
-        
+
         flash("Successfully generated new activity file! You can find it at the top of 'Converted files', below.", "success")
         return redirect(url_for('organisation_dashboard',
                                 organisation_slug = organisation_slug))
 
     return jsonify({"error": "No transactions data found"})
 
-@app.route("/<organisation_slug>/generate_org_file/", 
+@app.route("/<organisation_slug>/generate_org_file/",
            methods=["POST", "GET"])
 def orgfile_generate(organisation_slug):
     org_xml = sigenerate.generate_iati_organisation_data(
@@ -115,13 +115,13 @@ def orgfile_generate(organisation_slug):
     # Make a new OrgConvertedFile
     file_type = sifiles.get_file_type_by_name("Organisation").code
     newfile_obj = sifiles.create_file(file_type, organisation_slug)
-    
+
     full_new_file_path = os.path.join(DATA_STORAGE_DIR,
                                       newfile_obj.file_name)
-                                      
+
     org_xml.write(full_new_file_path,
-                  encoding="UTF-8", 
-                  pretty_print = True, 
+                  encoding="UTF-8",
+                  pretty_print = True,
                   xml_declaration=True)
 
     flash("Successfully generated new organisation file! You can find it at the top of 'Converted files', below.", "success")

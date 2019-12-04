@@ -26,14 +26,14 @@ $(document).on("change", "#activity-form input[type=checkbox]", function(e) {
   }
   var activates = $(this).attr("data-activates");
   $("#"+activates).prop("disabled", !(this.checked));
-    
+
   var input = this;
   resetFormGroup(input);
   $.post("update_activity/", data, function(resultdata) {
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  });  
+  });
 });
 $(document).on("change", "#activity-form input[type=text], #activity-form textarea", function(e) {
   var data = {
@@ -46,7 +46,7 @@ $(document).on("change", "#activity-form input[type=text], #activity-form textar
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  });  
+  });
 });
 $(document).on("change", ".result-data-form input[type=text], \
 .result-data-form textarea", function(e) {
@@ -63,7 +63,7 @@ $(document).on("change", ".result-data-form input[type=text], \
     successFormGroup(input);
   }).fail(function(){
     errorFormGroup(input);
-  });  
+  });
 });
 
 $(document).on("click", "#deleteResultBtn, #deleteIndicatorBtn, \
@@ -141,7 +141,7 @@ function add_result_data(data, id) {
     <hr /> \
   </div> \
     ').appendTo("#results");
-    
+
   } else if (d['type'] == "indicator") {
     $("<div />", { id : 'indicator-elements-' + id })
       .append(' \
@@ -206,7 +206,7 @@ function add_result_data(data, id) {
   </div> \
     ')
     .appendTo("#result-elements-" + d['result_id']);
-    
+
   } else if (d['type'] == "period") {
     $("<div />", { id : 'period-elements-' + id })
       .append(' \
@@ -270,7 +270,7 @@ function add_result_data(data, id) {
         </div> \
     ')
     .appendTo("#indicator-elements-" + d['indicator_id']);
-    
+
   }
 }
 

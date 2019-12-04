@@ -9,6 +9,7 @@ def setup():
         "organisation_ref": "GB-COH-07676886",
         "organisation_type": "21",
         "organisation_default_currency": "GBP",
+        "organisation_default_language": "en",
         "organisation_contact_name": "Linda Grimsey",
         "organisation_contact_email": "info@publishwhatyoufund.org",
         "organisation_contact_address": "Southbank House, Black Prince Road, London SE1 7SJ. United Kingdom",
@@ -16,35 +17,35 @@ def setup():
         "organisation_contact_website": "http://www.publishwhatyoufund.org",
     }
     org = organisation.create_org(org_data)
-    
+
     budget_data = {
-        "start_date": '2014-01-10',
+        "start_date": '2014-10-01',
         "end_date": '2015-09-30',
         "value": 12345.00,
         "organisation_slug": org.organisation_slug,
     }
     organisation.create_org_budget(budget_data)
-    
+
     excluded_strings = ["NAMES", "OF", "YOUR", "EMPLOYEES"
         ]
-    
+
     for e in excluded_strings:
         excluded_string_data = {
             "organisation_slug": org.organisation_slug,
             "excluded_string": e,
         }
         organisation.create_excluded_string(excluded_string_data)
-    
+
     aggregated_accounts = [
-        {'account_number': '61000', 
-         'account_description': 'Aggregated salaries'}, 
-        {'account_number': '61100', 
+        {'account_number': '61000',
+         'account_description': 'Aggregated salaries'},
+        {'account_number': '61100',
          'account_description': 'Aggregated national insurance'},]
-    
+
     for account in aggregated_accounts:
         account['organisation_slug'] = org.organisation_slug
         organisation.create_aggregated_account(account)
-    
+
     activity_data = [{
         "code": "1",
         "title": "Advocacy and communications",
@@ -133,12 +134,12 @@ def setup():
      }
     ]
     activity.add_results_data(results, 1, "publish-what-you-fund")
-    
+
     file_types = [{'code': '1', 'name': 'Activity'},
                   {'code': '2', 'name': 'Organisation'}]
     for ft in file_types:
         files.create_file_type(ft['code'], ft['name'])
-        
+
     userdata = {
         'username': 'mark',
         'password': '12345',

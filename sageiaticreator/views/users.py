@@ -5,7 +5,7 @@ from flask.ext.login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin,
                             confirm_login,
                             fresh_login_required)
-                            
+
 from sageiaticreator import app, db, models
 from sageiaticreator.query import user as quser
 
