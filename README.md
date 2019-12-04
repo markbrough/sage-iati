@@ -83,6 +83,7 @@ Activate the virtualenv:
 Install the requirements:
 
     pip install -r requirements.txt
+    yarn install
 
 Copy and edit the config.py.tmpl:
 
