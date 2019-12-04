@@ -1,13 +1,18 @@
 from flask import Flask, render_template, flash, request, Markup, \
-    session, redirect, url_for, escape, Response, abort, send_file, jsonify
-from flask.ext.login import login_required, current_user
+    session, redirect, url_for, escape, Response, abort, send_file, jsonify, Blueprint
+from flask_login import login_required, current_user
 
-from sageiaticreator import app, db, models
+from sageiaticreator import models
+from sageiaticreator.extensions import db
 from sageiaticreator.query import user as quser
 from sageiaticreator.query import organisation as siorganisation
 from sageiaticreator.query import activity as siactivity
 from sageiaticreator.query import files as sifiles
 import json
+
+
+app = Blueprint('organisations', __name__,
+    url_prefix='/', static_folder='../static')
 
 @app.route("/<organisation_slug>/")
 @login_required
