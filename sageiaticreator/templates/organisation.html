@@ -23,7 +23,7 @@
               <p class="lead">Use existing organisation settings to
                 generate a new organisation file.</p>
               <form class="form-horizontal" method="post" action="{{
-                  url_for('orgfile_generate',
+                  url_for('generate.orgfile_generate',
                   organisation_slug = organisation.organisation_slug)
                 }}">
                 <div class="form-group">
@@ -40,7 +40,7 @@
               <p class="lead">Upload new transactional data to generate
                 a new activity file.</p>
               <form class="form-horizontal" method="post" action="{{
-                  url_for('transactions_preview',
+                  url_for('generate.transactions_preview',
                   organisation_slug = organisation.organisation_slug)
                 }}" enctype="multipart/form-data">
                 <div class="form-group">
@@ -90,12 +90,12 @@
               <tr>
                 <td>{{ cfile.file_type.name }}</td>
                 <td>{{ cfile.file_generated_date }}</td>
-                <td><a href="{{ url_for('get_file',
+                <td><a href="{{ url_for('generate.get_file',
                   organisation_slug=organisation.organisation_slug,
                   file_id=cfile.id) }}">
                   <span class="glyphicon glyphicon-eye-open"></span> View
                 </a></td>
-                <td><a href="http://validator.iatistandard.org/?url={{ url_for('get_file',
+                <td><a href="http://validator.iatistandard.org/?url={{ url_for('generate.get_file',
                   organisation_slug=organisation.organisation_slug,
                   file_id=cfile.id,
                   _external=True) }}">
@@ -133,7 +133,7 @@
             <td>{{ activity.description }}</td>
             <td>{{ activity.start_date }}</td>
             <td>{{ activity.end_date }}</td>
-            <td><a href="{{ url_for('activity_edit',
+            <td><a href="{{ url_for('activities.activity_edit',
               organisation_slug=organisation.organisation_slug,
               activity_id=activity.id) }}">
               <span class="glyphicon glyphicon-pencil"></span>
@@ -155,7 +155,7 @@
         <dd>{{ organisation.organisation_type }}</dd>
       </dl>
 
-      <a href="{{ url_for('organisation_edit',
+      <a href="{{ url_for('organisations.organisation_edit',
       organisation_slug = organisation.organisation_slug)}}"
       class="btn btn-default">
       <b><span class="glyphicon glyphicon-pencil"></span> Edit organisation</b>
