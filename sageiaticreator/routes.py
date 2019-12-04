@@ -1,13 +1,16 @@
-from flask import Flask, render_template, flash, request, Markup, \
-    session, redirect, url_for, escape, Response, abort, send_file, jsonify
-from flask.ext.login import login_required, current_user
+from flask import Blueprint, render_template
+from flask_login import current_user
 
-from sageiaticreator import app
-from sageiaticreator import db
-import models
-import setup as sisetup
-from views import users, organisations, activities, generate
-from query import organisation as siorganisation
+from sageiaticreator.extensions import db
+from sageiaticreator import models
+from sageiaticreator import setup as sisetup
+from sageiaticreator.views import users, organisations, activities, generate
+from sageiaticreator.query import organisation as siorganisation
+
+
+app = Blueprint('routes', __name__,
+    url_prefix='/', static_folder='../static')
+
 
 @app.route("/")
 def dashboard():
