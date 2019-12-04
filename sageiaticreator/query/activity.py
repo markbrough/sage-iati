@@ -11,7 +11,6 @@ def isostring_year(value):
     return datetime.datetime.strptime(value, "%Y")
 
 def create_activity(data):
-    #FIXME check this org doesn't already exist?
     act = models.Activity()
 
     # Dates have to be converted to date format, then removed from the
@@ -24,6 +23,14 @@ def create_activity(data):
     db.session.add(act)
     db.session.commit()
     return act
+
+def delete_activity(activity_id):
+    act = models.Activity.query.filter_by(
+        id = activity_id).first()
+    if act is None: return False
+    db.session.delete(act)
+    db.session.commit()
+    return True
 
 def get_activity(activity_id):
     act = models.Activity.query.filter_by(
