@@ -2,7 +2,7 @@
 
 Converts transactional information exported from Sage accounting software into IATI-XML format.
 
-Works with: 
+Works with:
 
 * Sage 50 Accounts Plus 2011 (version 17.0.15.208)
 * Sage Line 50 v 21
@@ -63,11 +63,11 @@ Copyright (C) 2015 Mark Brough, Publish What You Fund
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    
+
 #### DISCLAIMER
 
     This software is not in any way endorsed by or related to Sage.
-    
+
 ## Installation
 
 Works on Python 2.7 and (new!) Python3.7.5
@@ -89,7 +89,7 @@ Copy and edit the config.py.tmpl:
 
     cp config.py.tmpl config.py
 
-You can also copy end edit the setup.py.tmpl to get going quickly (this 
+You can also copy end edit the setup.py.tmpl to get going quickly (this
 will be replaced with a more sensible setup mechanism in future):
 
     cp sageiaticreator/setup.py.tmpl setup.py
