@@ -16,6 +16,7 @@ app = Blueprint('activities', __name__,
 
 
 @app.route("/<organisation_slug>/new_activity/")
+@login_required
 def activity_new(organisation_slug):
     today = datetime.datetime.utcnow().date().isoformat()
     activity_data = {'start_date': today, 'end_date': today,
@@ -41,6 +42,7 @@ def activity_new(organisation_slug):
 
 
 @app.route("/<organisation_slug>/<activity_id>/delete/")
+@login_required
 def activity_delete(organisation_slug, activity_id):
     result = siactivity.delete_activity(activity_id)
     if result:
@@ -53,6 +55,7 @@ def activity_delete(organisation_slug, activity_id):
 
 
 @app.route("/<organisation_slug>/<activity_id>/edit/")
+@login_required
 def activity_edit(organisation_slug, activity_id):
     organisation = siorganisation.get_org(organisation_slug)
     activity = siactivity.get_activity(activity_id)
@@ -63,6 +66,7 @@ def activity_edit(organisation_slug, activity_id):
                           )
 
 @app.route("/<organisation_slug>/<activity_id>/edit/update_result/", methods=['POST'])
+@login_required
 def activity_edit_result_attr(organisation_slug, activity_id):
     data = {
         'attr': request.form['attr'],
@@ -75,6 +79,7 @@ def activity_edit_result_attr(organisation_slug, activity_id):
     return "error"
 
 @app.route("/<organisation_slug>/<activity_id>/edit/update_indicator/", methods=['POST'])
+@login_required
 def activity_edit_indicator_attr(organisation_slug, activity_id):
     data = {
         'attr': request.form['attr'],
@@ -87,6 +92,7 @@ def activity_edit_indicator_attr(organisation_slug, activity_id):
     return "error"
 
 @app.route("/<organisation_slug>/<activity_id>/edit/update_period/", methods=['POST'])
+@login_required
 def activity_edit_period_attr(organisation_slug, activity_id):
     data = {
         'attr': request.form['attr'],
@@ -99,6 +105,7 @@ def activity_edit_period_attr(organisation_slug, activity_id):
     return "error"
 
 @app.route("/<organisation_slug>/<activity_id>/edit/delete_result_data/", methods=['POST'])
+@login_required
 def activity_delete_result_data(organisation_slug, activity_id):
     data = {
         'id': request.form['id'],
@@ -110,6 +117,7 @@ def activity_delete_result_data(organisation_slug, activity_id):
     return "error"
 
 @app.route("/<organisation_slug>/<activity_id>/edit/add_result_data/", methods=['POST'])
+@login_required
 def activity_add_results_data(organisation_slug, activity_id):
     data = request.form
     add_status = siactivity.add_result_data(activity_id, data)
@@ -124,6 +132,7 @@ def activity_add_results_data(organisation_slug, activity_id):
     return "error"
 
 @app.route("/<organisation_slug>/<activity_id>/edit/update_activity/", methods=['POST'])
+@login_required
 def activity_edit_attr(organisation_slug, activity_id):
     data = {
         'attr': request.form['attr'],

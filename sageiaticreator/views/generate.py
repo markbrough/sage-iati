@@ -52,6 +52,7 @@ def get_file(organisation_slug, file_id):
 
 @app.route("/<organisation_slug>/transactions_preview/",
     methods=["POST", "GET"])
+@login_required
 def transactions_preview(organisation_slug):
     if request.method != "POST":
         flash("Error: no transactions data found.", "danger")
@@ -89,6 +90,7 @@ def transactions_preview(organisation_slug):
 
 @app.route("/<organisation_slug>/transactions_preview/generate_iati_data/",
     methods=["POST", "GET"])
+@login_required
 def generate_iati_data(organisation_slug):
     DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     if request.method == "POST":
@@ -117,6 +119,7 @@ def generate_iati_data(organisation_slug):
 
 @app.route("/<organisation_slug>/generate_org_file/",
            methods=["POST", "GET"])
+@login_required
 def orgfile_generate(organisation_slug):
     DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     org_xml = sigenerate.generate_iati_organisation_data(

@@ -41,6 +41,7 @@ def organisation_dashboard(organisation_slug):
                           )
 
 @app.route("/<organisation_slug>/edit/")
+@login_required
 def organisation_edit(organisation_slug):
     organisation = siorganisation.get_org(organisation_slug)
     organisation_budgets = siorganisation.list_org_budgets(
@@ -74,6 +75,7 @@ def organisation_edit(organisation_slug):
 
 
 @app.route("/<organisation_slug>/edit/update_org_attr/", methods=['POST'])
+@login_required
 def organisation_edit_attr(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -86,6 +88,7 @@ def organisation_edit_attr(organisation_slug):
     return "error"
 
 @app.route("/<organisation_slug>/edit/update_org_budget/", methods=['POST'])
+@login_required
 def organisation_edit_budget(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -100,6 +103,7 @@ def organisation_edit_budget(organisation_slug):
 
 
 @app.route("/<organisation_slug>/edit/new_org_budget/", methods=['POST'])
+@login_required
 def organisation_new_budget(organisation_slug):
     new_budget = siorganisation.new_budget(organisation_slug)
     if new_budget:
@@ -108,6 +112,7 @@ def organisation_new_budget(organisation_slug):
 
 
 @app.route("/<organisation_slug>/edit/delete_org_budget/", methods=['POST'])
+@login_required
 def organisation_delete_budget(organisation_slug):
     budget_id = request.form['budget_id']
     deleted_budget = siorganisation.delete_budget(budget_id)
@@ -118,6 +123,7 @@ def organisation_delete_budget(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/update_org_budgetline/",
            methods=['POST'])
+@login_required
 def organisation_edit_budgetline(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -132,6 +138,7 @@ def organisation_edit_budgetline(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/new_org_budgetline/",
            methods=['POST'])
+@login_required
 def organisation_new_budgetline(organisation_slug):
     budget_id = request.form['budget_id']
     new_budgetline = siorganisation.new_budgetline(budget_id)
@@ -142,6 +149,7 @@ def organisation_new_budgetline(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/delete_org_budgetline/",
            methods=['POST'])
+@login_required
 def organisation_delete_budgetline(organisation_slug):
     budgetline_id = request.form['budgetline_id']
     deleted_budgetline = siorganisation.delete_budgetline(budgetline_id)
@@ -152,6 +160,7 @@ def organisation_delete_budgetline(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/update_org_expenditure/",
            methods=['POST'])
+@login_required
 def organisation_edit_expenditure(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -164,6 +173,7 @@ def organisation_edit_expenditure(organisation_slug):
 
 
 @app.route("/<organisation_slug>/edit/new_org_expenditure/", methods=['POST'])
+@login_required
 def organisation_new_expenditure(organisation_slug):
     new_expenditure = siorganisation.new_expenditure(organisation_slug)
     if new_expenditure:
@@ -173,6 +183,7 @@ def organisation_new_expenditure(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/delete_org_expenditure/",
            methods=['POST'])
+@login_required
 def organisation_delete_expenditure(organisation_slug):
     expenditure_id = request.form['expenditure_id']
     deleted_expenditure = siorganisation.delete_expenditure(expenditure_id)
@@ -183,6 +194,7 @@ def organisation_delete_expenditure(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/update_org_expenditureline/",
            methods=['POST'])
+@login_required
 def organisation_edit_expenditureline(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -197,6 +209,7 @@ def organisation_edit_expenditureline(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/new_org_expenditureline/",
            methods=['POST'])
+@login_required
 def organisation_new_expenditureline(organisation_slug):
     expenditure_id = request.form['expenditure_id']
     new_expenditureline = siorganisation.new_expenditureline(expenditure_id)
@@ -207,6 +220,7 @@ def organisation_new_expenditureline(organisation_slug):
 
 @app.route("/<organisation_slug>/edit/delete_org_expenditureline/",
            methods=['POST'])
+@login_required
 def organisation_delete_expenditureline(organisation_slug):
     expenditureline_id = request.form['expenditureline_id']
     deleted_expenditureline = siorganisation.delete_expenditureline(
@@ -217,6 +231,7 @@ def organisation_delete_expenditureline(organisation_slug):
 
 
 @app.route("/<organisation_slug>/edit/new_org_doc/", methods=['POST'])
+@login_required
 def organisation_new_doc(organisation_slug):
     new_doc = siorganisation.new_doc(organisation_slug)
     if new_doc:
@@ -224,6 +239,7 @@ def organisation_new_doc(organisation_slug):
     return "error"
 
 @app.route("/<organisation_slug>/edit/delete_org_doc/", methods=['POST'])
+@login_required
 def organisation_delete_doc(organisation_slug):
     doc_id = request.form['doc_id']
     deleted_doc = siorganisation.delete_doc(doc_id)
@@ -232,6 +248,7 @@ def organisation_delete_doc(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/edit/update_org_doc/", methods=['POST'])
+@login_required
 def organisation_edit_doc(organisation_slug):
     data = {
         'attr': request.form['attr'],
@@ -245,6 +262,7 @@ def organisation_edit_doc(organisation_slug):
     return "error"
 
 @app.route("/<organisation_slug>/edit/add_funding_org/", methods=['POST'])
+@login_required
 def organisation_new_funder(organisation_slug):
     data = {
         "funding_org_name": request.form['funding_org_name'],
@@ -258,6 +276,7 @@ def organisation_new_funder(organisation_slug):
     return "error"
 
 @app.route("/<organisation_slug>/edit/delete_funder/", methods=['POST'])
+@login_required
 def organisation_delete_funder(organisation_slug):
     funder_id = request.form['funder_id']
     deleted_funder = siorganisation.delete_funder(
@@ -268,6 +287,7 @@ def organisation_delete_funder(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/edit/delete_aggregated_account/", methods=['POST'])
+@login_required
 def organisation_delete_aggregated_account(organisation_slug):
     aggregated_account_id = request.form['aggregated_account_id']
     deleted_account = siorganisation.delete_aggregated_account(
@@ -278,6 +298,7 @@ def organisation_delete_aggregated_account(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/edit/delete_excluded_string/", methods=['POST'])
+@login_required
 def organisation_delete_excluded_string(organisation_slug):
     excluded_string_id = request.form['excluded_string_id']
     deleted_string = siorganisation.delete_excluded_string(
@@ -288,6 +309,7 @@ def organisation_delete_excluded_string(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/edit/add_excluded_string/", methods=['POST'])
+@login_required
 def organisation_add_excluded_string(organisation_slug):
     excluded_string = request.form['excluded_string']
     data = {
@@ -302,6 +324,7 @@ def organisation_add_excluded_string(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/edit/add_aggregate_account/", methods=['POST'])
+@login_required
 def organisation_add_aggregate_account(organisation_slug):
     account_number = request.form['account_number']
     account_description = request.form['account_description']
@@ -318,6 +341,7 @@ def organisation_add_aggregate_account(organisation_slug):
     return False
 
 @app.route("/<organisation_slug>/publish_file/", methods=['POST'])
+@login_required
 def update_published_file(organisation_slug):
     file_id = request.form["file_id"]
     publish_file = sifiles.publish_file(file_id, organisation_slug)
