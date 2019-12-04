@@ -9,8 +9,6 @@ import re
 from lxml import etree as et
 from sageiaticreator.lib.codelist_helpers import codelists
 
-DATA_STORAGE_DIR = app.config['DATA_STORAGE_DIR']
-
 def isostring_date(value):
     # Returns a date object from a string of format YYYY-MM-DD
     return datetime.datetime.strptime(value, "%Y-%m-%d")
