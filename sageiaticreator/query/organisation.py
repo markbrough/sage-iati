@@ -1,4 +1,5 @@
-from sageiaticreator import db, models
+from sageiaticreator.extensions import db
+from sageiaticreator import models
 import normality
 import datetime, time
 
