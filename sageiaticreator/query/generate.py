@@ -205,7 +205,7 @@ def build_indicator(el_result, indicator):
 
 def build_result(ia, result):
     r = result.as_dict()
-    el_result = el_with_attrib("result", "type", unicode(r['result_type']))
+    el_result = el_with_attrib("result", "type", str(r['result_type']))
     ia.append(el_result)
     el_result.append(el_with_narrative("title", r['result_title']))
     if r.get('result_description'):
