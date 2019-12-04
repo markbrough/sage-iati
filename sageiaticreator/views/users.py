@@ -1,10 +1,7 @@
-from flask import Flask, render_template, flash, request, Markup, \
-    session, redirect, url_for, escape, Response, abort, send_file, \
-    current_app, Blueprint
-from flask_login import (LoginManager, current_user, login_required,
-                            login_user, logout_user, UserMixin,
-                            confirm_login,
-                            fresh_login_required)
+from flask import Flask, render_template, flash, request,  \
+    redirect, url_for, Blueprint
+from flask_login import (current_user, login_required,
+                            login_user, logout_user)
 
 from sageiaticreator import models
 from sageiaticreator.query import user as quser
