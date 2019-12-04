@@ -1,4 +1,4 @@
-from flask import render_template, request, jsonify, Blueprint
+from flask import render_template, request, jsonify, Blueprint, redirect, url_for, flash
 from flask_login import login_required, current_user
 
 from sageiaticreator import models
@@ -9,9 +9,48 @@ from sageiaticreator.query import activity as siactivity
 from sageiaticreator.query import files as sifiles
 
 import json
+import datetime
 
 app = Blueprint('activities', __name__,
     url_prefix='/', static_folder='../static')
+
+
+@app.route("/<organisation_slug>/new_activity/")
+def activity_new(organisation_slug):
+    today = datetime.datetime.utcnow().date().isoformat()
+    activity_data = {'start_date': today, 'end_date': today,
+         'organisation_slug': organisation_slug}
+    blank_fields = ['code', 'title', 'description']
+    [activity_data.update({field: ''}) for field in blank_fields]
+
+    previous_activity = models.Activity.query.order_by(
+        models.Activity.id.desc()).first()
+    if previous_activity:
+        inherit_fields = ['recipient_country',
+            'recipient_country_code', 'recipient_region',
+            'recipient_region_code', 'sector',
+            'flow_type', 'aid_type', 'activity_status']
+        [activity_data.update({field: getattr(
+            previous_activity, field)}) for field in inherit_fields]
+
+    activity = siactivity.create_activity(activity_data
+        )
+    return redirect(url_for('activities.activity_edit',
+        organisation_slug=organisation_slug,
+        activity_id=activity.id))
+
+
+@app.route("/<organisation_slug>/<activity_id>/delete/")
+def activity_delete(organisation_slug, activity_id):
+    result = siactivity.delete_activity(activity_id)
+    if result:
+        flash("Successfully deleted that activity.", "success")
+    else:
+        flash("There was an error, and that activity could not be deleted.", "danger")
+    return redirect(url_for("organisations.organisation_dashboard",
+        organisation_slug=organisation_slug))
+    return "Delete activity"
+
 
 @app.route("/<organisation_slug>/<activity_id>/edit/")
 def activity_edit(organisation_slug, activity_id):
