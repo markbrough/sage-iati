@@ -49,7 +49,8 @@ By clicking on "Edit organisation data" from the top menu bar, you can edit:
 
 ## License: AGPL v3.0
 
-Copyright (C) 2015 Mark Brough, Publish What You Fund
+Copyright (C) 2015-2019 Mark Brough, Publish What You Fund
+Copyright (C) 2019 Andy Lulham
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
