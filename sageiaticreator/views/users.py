@@ -1,17 +1,19 @@
 from flask import Flask, render_template, flash, request, Markup, \
     session, redirect, url_for, escape, Response, abort, send_file, \
-    current_app
-from flask.ext.login import (LoginManager, current_user, login_required,
+    current_app, Blueprint
+from flask_login import (LoginManager, current_user, login_required,
                             login_user, logout_user, UserMixin,
                             confirm_login,
                             fresh_login_required)
 
-from sageiaticreator import app, db, models
+from sageiaticreator import models
 from sageiaticreator.query import user as quser
+from sageiaticreator.extensions import db, login_manager
 
-login_manager = LoginManager()
-login_manager.setup_app(app)
-login_manager.login_view = "login"
+
+app = Blueprint('users', __name__,
+    url_prefix='/', static_folder='../static')
+
 
 @login_manager.user_loader
 def load_user(id):
@@ -27,7 +29,7 @@ def login():
                 if request.args.get("next"):
                     redir_url = request.script_root + request.args.get("next")
                 else:
-                    redir_url = url_for("dashboard")
+                    redir_url = url_for("routes.dashboard")
                 return redirect(redir_url)
             else:
                 flash("Sorry, but you could not log in.", "error")
@@ -41,5 +43,5 @@ def login():
 def logout():
     logout_user()
     flash('Logged out', 'success')
-    redir_url = url_for("dashboard")
+    redir_url = url_for("routes.dashboard")
     return redirect(redir_url)
