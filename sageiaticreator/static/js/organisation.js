@@ -20,3 +20,8 @@ $(document).on("click", ".publish-btn", function(e) {
     alert("Couldn't update the published file!");
   });
 });
+$("#confirm-delete").on('show.bs.modal', function(e) {
+    var target_href = $(e.relatedTarget).data("href");
+    console.log(target_href)
+    $('#confirm-delete-button').attr("href", target_href);
+});
