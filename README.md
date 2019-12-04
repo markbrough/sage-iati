@@ -70,6 +70,8 @@ Copyright (C) 2015 Mark Brough, Publish What You Fund
     
 ## Installation
 
+Works on Python 2.7 and (new!) Python3.7.5
+
 Set up a virtualenv:
 
     virtualenv ./pyenv
