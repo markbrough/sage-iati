@@ -5,6 +5,7 @@ Converts transactional information exported from Sage accounting software into I
 Works with: 
 
 * Sage 50 Accounts Plus 2011 (version 17.0.15.208)
+* Sage Line 50 v 21
 
 ## How does it work?
 
