@@ -1,5 +1,6 @@
 from flask import render_template, request, \
-    redirect, url_for, Response, jsonify, current_app, Blueprint
+    redirect, url_for, Response, jsonify, current_app, \
+    Blueprint, flash
 from flask_login import login_required, current_user
 
 from sageiaticreator import models
