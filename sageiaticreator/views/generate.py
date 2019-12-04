@@ -1,8 +1,10 @@
-from flask import Flask, render_template, flash, request, Markup, \
-    session, redirect, url_for, escape, Response, abort, send_file, jsonify
-from flask.ext.login import login_required, current_user
+from flask import render_template, request, \
+    redirect, url_for, Response, jsonify, current_app, \
+    Blueprint, flash
+from flask_login import login_required, current_user
 
-from sageiaticreator import app, db, models
+from sageiaticreator import models
+from sageiaticreator.extensions import db
 from sageiaticreator.query import user as quser
 from sageiaticreator.query import organisation as siorganisation
 from sageiaticreator.query import activity as siactivity
@@ -13,10 +15,14 @@ from sageiaticreator.query import generate as sigenerate
 import json, os
 from lxml import etree as et
 
-DATA_STORAGE_DIR = app.config['DATA_STORAGE_DIR']
+
+app = Blueprint('generate', __name__,
+    url_prefix='/', static_folder='../static')
+
 
 @app.route("/<organisation_slug>/activity.xml")
 def get_activity_file(organisation_slug):
+    DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     file_obj = sifiles.get_file_by_type(organisation_slug, "1")
     full_file_path = os.path.join(DATA_STORAGE_DIR,
                                   file_obj.file_name)
@@ -26,6 +32,7 @@ def get_activity_file(organisation_slug):
 
 @app.route("/<organisation_slug>/organisation.xml")
 def get_organisation_file(organisation_slug):
+    DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     file_obj = sifiles.get_file_by_type(organisation_slug, "2")
     full_file_path = os.path.join(DATA_STORAGE_DIR,
                                   file_obj.file_name)
@@ -35,6 +42,7 @@ def get_organisation_file(organisation_slug):
 
 @app.route("/<organisation_slug>/files/<file_id>.xml")
 def get_file(organisation_slug, file_id):
+    DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     file_obj = sifiles.get_file(file_id)
     full_file_path = os.path.join(DATA_STORAGE_DIR,
                                   file_obj.file_name)
@@ -47,7 +55,7 @@ def get_file(organisation_slug, file_id):
 def transactions_preview(organisation_slug):
     if request.method != "POST":
         flash("Error: no transactions data found.", "danger")
-        return redirect(url_for('organisation_dashboard',
+        return redirect(url_for('organisations.organisation_dashboard',
             organisation_slug = organisation_slug))
     organisation = siorganisation.get_org(organisation_slug)
     organisation_budgets = siorganisation.list_org_budgets(
@@ -82,6 +90,7 @@ def transactions_preview(organisation_slug):
 @app.route("/<organisation_slug>/transactions_preview/generate_iati_data/",
     methods=["POST", "GET"])
 def generate_iati_data(organisation_slug):
+    DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     if request.method == "POST":
         jsondata = json.loads(request.form['jsondata'])
 
@@ -101,7 +110,7 @@ def generate_iati_data(organisation_slug):
                            xml_declaration=True)
 
         flash("Successfully generated new activity file! You can find it at the top of 'Converted files', below.", "success")
-        return redirect(url_for('organisation_dashboard',
+        return redirect(url_for('organisations.organisation_dashboard',
                                 organisation_slug = organisation_slug))
 
     return jsonify({"error": "No transactions data found"})
@@ -109,6 +118,7 @@ def generate_iati_data(organisation_slug):
 @app.route("/<organisation_slug>/generate_org_file/",
            methods=["POST", "GET"])
 def orgfile_generate(organisation_slug):
+    DATA_STORAGE_DIR = current_app.config['DATA_STORAGE_DIR']
     org_xml = sigenerate.generate_iati_organisation_data(
         organisation_slug
     )
@@ -125,5 +135,5 @@ def orgfile_generate(organisation_slug):
                   xml_declaration=True)
 
     flash("Successfully generated new organisation file! You can find it at the top of 'Converted files', below.", "success")
-    return redirect(url_for('organisation_dashboard',
+    return redirect(url_for('organisations.organisation_dashboard',
                             organisation_slug = organisation_slug))

@@ -5,6 +5,7 @@ Converts transactional information exported from Sage accounting software into I
 Works with: 
 
 * Sage 50 Accounts Plus 2011 (version 17.0.15.208)
+* Sage Line 50 v 21
 
 ## How does it work?
 
@@ -69,6 +70,8 @@ Copyright (C) 2015 Mark Brough, Publish What You Fund
     
 ## Installation
 
+Works on Python 2.7 and (new!) Python3.7.5
+
 Set up a virtualenv:
 
     virtualenv ./pyenv
@@ -80,6 +83,7 @@ Activate the virtualenv:
 Install the requirements:
 
     pip install -r requirements.txt
+    yarn install
 
 Copy and edit the config.py.tmpl:
 

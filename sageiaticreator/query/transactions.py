@@ -1,4 +1,6 @@
-from sageiaticreator import app, db, models
+from flask import current_app
+from sageiaticreator.extensions import db
+from sageiaticreator import models
 from sageiaticreator.query import organisation as siorganisation
 from sageiaticreator.query import activity as siactivity
 import xlrd
@@ -10,8 +12,6 @@ import re
 # Divide into activities
 # Generate IATI-identifier
 # Aggregate and exclude
-
-ALLOWED_EXTENSIONS = app.config['ALLOWED_EXTENSIONS']
 
 def isostring_date(value):
     # Returns a date object from a string of format YYYY-MM-DD
@@ -30,11 +30,12 @@ def date_to_isoformat(date):
     return date.isoformat()
 
 def allowed_file(filename):
+    ALLOWED_EXTENSIONS = current_app.config['ALLOWED_EXTENSIONS']
     return '.' in filename and \
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 def correct_dept(department, activities):
-    dept = unicode(int(department))
+    dept = str(int(department))
     if dept not in activities:
         #FIXME allow activities to specify default; for now just put
         # everything in the highest number activity

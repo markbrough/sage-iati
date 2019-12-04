@@ -14,7 +14,7 @@
     <tr>
       <td>{{ organisation.organisation_name }}</td>
       <td>{{ organisation.organisation_ref }}</td>
-      <td><a href="{{url_for('organisation_dashboard',
+      <td><a href="{{url_for('organisations.organisation_dashboard',
             organisation_slug = organisation.organisation_slug)}}">
             <span class="glyphicon glyphicon-pencil"></span>
           </a></td>

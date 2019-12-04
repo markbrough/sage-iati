@@ -1,3 +1,6 @@
+/sageiaticreator/static/packages/
+*.sublime-*
+.DS_Store
 *.pyc
 *.sqlite
 

@@ -1,6 +1,6 @@
 import sqlalchemy as sa
 import functools as ft
-from sageiaticreator import db
+from sageiaticreator.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 cascade_relationship = ft.partial(

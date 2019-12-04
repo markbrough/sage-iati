@@ -1,6 +1,6 @@
 from sageiaticreator import db, models
-from query import organisation, activity, files
-from query import user as quser
+from sageiaticreator.query import organisation, activity, files
+from sageiaticreator.query import user as quser
 
 def setup():
     db.create_all()
