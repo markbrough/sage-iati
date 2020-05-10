@@ -26,7 +26,8 @@ def upgrade():
     sa.Column('funding_org_activity_id', sa.UnicodeText(), nullable=True),
     sa.ForeignKeyConstraint(['organisation_slug'], ['organisation.organisation_slug'], ),
     sa.ForeignKeyConstraint(['organisationfunder_id'], ['organisationfunder.id'], ),
-    sa.PrimaryKeyConstraint('id')
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('organisation_slug', 'account_number', name='organisationfunder_incomingfunds')
     )
     # ### end Alembic commands ###
 
