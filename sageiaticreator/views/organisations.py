@@ -286,6 +286,31 @@ def organisation_delete_funder(organisation_slug):
         return "success"
     return False
 
+@app.route("/<organisation_slug>/edit/add_incoming_funds/", methods=['POST'])
+@login_required
+def organisation_new_incoming_funds(organisation_slug):
+    data = {
+        "organisationfunder_id": int(request.form['organisationfunder_id']),
+        "account_number": request.form['account_number'],
+        "funding_org_activity_id": request.form['funding_org_activity_id'],
+        "organisation_slug": organisation_slug,
+    }
+    new_incoming_funds = siorganisation.create_incoming_funds(data)
+    if new_incoming_funds:
+        return json.dumps(new_incoming_funds.as_dict())
+    return "error"
+
+@app.route("/<organisation_slug>/edit/delete_incoming_funds/", methods=['POST'])
+@login_required
+def organisation_delete_incoming_funds(organisation_slug):
+    incoming_funds_id = int(request.form['incoming_funds_id'])
+    deleted_incoming_funds = siorganisation.delete_incoming_funds(
+        incoming_funds_id
+    )
+    if deleted_incoming_funds:
+        return "success"
+    return False
+
 @app.route("/<organisation_slug>/edit/delete_aggregated_account/", methods=['POST'])
 @login_required
 def organisation_delete_aggregated_account(organisation_slug):
