@@ -29,9 +29,9 @@ def login():
                     redir_url = url_for("routes.dashboard")
                 return redirect(redir_url)
             else:
-                flash("Sorry, but you could not log in.", "error")
+                flash("Sorry, but you could not log in.", "danger")
         else:
-            flash(u"Invalid username or password.", "error")
+            flash(u"Invalid username or password.", "danger")
     return render_template("login.html",
              loggedinuser=current_user)
 
