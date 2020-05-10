@@ -144,3 +144,17 @@ def activity_edit_attr(organisation_slug, activity_id):
     if update_status == True:
         return "success"
     return "error"
+
+@app.route("/<organisation_slug>/<activity_id>/edit/update_activity_funders/", methods=['POST'])
+@login_required
+def activity_edit_funders(organisation_slug, activity_id):
+    data = {
+        'funder': int(request.form['funder']),
+        'value': int(request.form['value']),
+        'organisation_slug': organisation_slug,
+        'id': activity_id,
+    }
+    update_status = siactivity.update_funders(data)
+    if update_status == True:
+        return "success"
+    return "error"
