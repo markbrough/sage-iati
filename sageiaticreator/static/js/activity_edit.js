@@ -35,6 +35,20 @@ $(document).on("change", "#activity-form input[type=checkbox]", function(e) {
     errorFormGroup(input);
   });
 });
+$(document).on("change", "#funders-form input[type=checkbox]", function(e) {
+  console.log("this", this)
+  var data = {
+    'funder': this.value,
+    'value': this.checked ? 1 : 0,
+  }
+  var input = this;
+  resetFormGroup(input);
+  $.post("update_activity_funders/", data, function(resultdata) {
+    successFormGroup(input);
+  }).fail(function(){
+    errorFormGroup(input);
+  });
+});
 $(document).on("change", "#activity-form input[type=text], #activity-form textarea", function(e) {
   var data = {
     'attr': this.name,

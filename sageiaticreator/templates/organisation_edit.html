@@ -323,6 +323,34 @@
       data-target="#addFunderModal">
         <span class="glyphicon glyphicon-plus"></span> <b>Add funder</b>
       </a>
+      <hr />
+      <h3>Incoming funds</h3>
+      <p>Map accounts for incoming funds to particular organisations</p>
+      <table class="table" id="incoming-funds-table">
+        <thead>
+          <th>Funding organisation</th>
+          <th>Account number</th>
+          <th>Funding organisation activity ID</th>
+        </thead>
+        <tbody>
+          {% for incoming_fund in organisation.incoming_funds %}
+          <tr data-incoming-funds-id="{{ incoming_fund.id }}">
+            <td>{{ incoming_fund.organisationfunder.funding_org_name }}</td>
+            <td>{{ incoming_fund.account_number }}</td>
+            <td>{{ incoming_fund.funding_org_activity_id }}</td>
+            <td>
+              <a href="" class="deleteIncomingFundsBtn">
+                <span class="glyphicon glyphicon-trash"></span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="" class="btn btn-success" data-toggle="modal"
+      data-target="#addIncomingFundsModal">
+        <span class="glyphicon glyphicon-plus"></span> <b>Add incoming funds</b>
+      </a>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="privacy">
@@ -384,7 +412,7 @@
   </div>
 </div>
 
-<!-- Excluded string modal -->
+<!-- Add funder modal -->
 <div class="modal fade" id="addFunderModal" tabindex="-1"
 role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -426,6 +454,70 @@ role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <button type="button" class="btn btn-default" data-dismiss="modal">
           Close</button>
         <button type="button" class="btn btn-success" id="addFunderBtn">
+          Add</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add incoming funds modal -->
+<div class="modal fade" id="addIncomingFundsModal" tabindex="-1"
+role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add incoming funds</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal" id="addIncomingFundsForm">
+          <div class="form-group">
+            <label for="funding_org_name" class="col-sm-3 control-label">
+              Funder</label>
+            <div class="col-sm-9">
+              <select type="text" class="form-control" id="organisationfunder_id"
+              name="organisationfunder_id">
+                {% for funder in funders %}
+                <option value="{{ funder.id }}">{{ funder.funding_org_name }}</option>
+                {% endfor %}
+              </select>
+              <p class="help-block">Select the funder from this organisation's
+              existing funding organisations.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="account_number" class="col-sm-3 control-label">
+              Account number</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="account_number"
+              name="account_number" placeholder="e.g. 4300">
+              <p class="help-block">The account number from Sage for these incoming funds.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="funding_org_activity_id" class="col-sm-3 control-label">
+              Funder activity ID</label>
+            <div class="col-sm-9">
+              <div class="input-group">
+                <input type="text" class="form-control" id="funding_org_activity_id"
+                name="funding_org_activity_id" placeholder="e.g. GB-GOV-1-12345-101">
+                <div class="input-group-addon">
+                  <a href="https://d-portal.org" id="funding_org_activity_id_search" target="_blank"
+                    title="Check this activity ID in D-Portal">
+                    <span class="glyphicon glyphicon-globe"></span>
+                  </a>
+                </div>
+              </div>
+              <p class="help-block">The funding organisation's activity ID. Leave blank if not known.</p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close</button>
+        <button type="button" class="btn btn-success" id="addIncomingFundsBtn">
           Add</button>
       </div>
     </div>

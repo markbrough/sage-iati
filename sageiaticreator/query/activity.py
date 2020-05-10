@@ -55,6 +55,21 @@ def update_attr(data):
     db.session.commit()
     return True
 
+def update_funders(data):
+    activity = models.Activity.query.filter_by(
+        id = data['id']
+    ).first()
+    if data['value'] == 0:
+        if data['funder'] in list(map(lambda funder: funder.id, activity.funders)):
+            activity.funders = [funder for funder in activity.funders if funder.id != data['funder']]
+        # Remove
+    elif data['value'] == 1:
+        if data['funder'] not in list(map(lambda funder: funder.id, activity.funders)):
+            activity.funders.append(models.OrgFunder.query.filter_by(id=data['funder']).first())
+    db.session.add(activity)
+    db.session.commit()
+    return True
+
 def update_result_attr(data):
     result = models.ActivityResult.query.filter_by(
         id = data['id']

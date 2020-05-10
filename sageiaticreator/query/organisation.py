@@ -302,3 +302,19 @@ def delete_funder(funder_id):
     db.session.delete(df)
     db.session.commit()
     return True
+
+def create_incoming_funds(data):
+    nf = models.OrgIncomingFunds()
+    for k, v in data.items():
+        setattr(nf, k, v)
+    db.session.add(nf)
+    db.session.commit()
+    return nf
+
+def delete_incoming_funds(incoming_funds_id):
+    df = models.OrgIncomingFunds.query.filter_by(
+        id = incoming_funds_id
+    ).first()
+    db.session.delete(df)
+    db.session.commit()
+    return True
