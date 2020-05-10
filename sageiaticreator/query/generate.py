@@ -100,7 +100,7 @@ def el_contact_info(organisation):
               organisation.organisation_contact_address))
     return ec
 
-def build_transaction(transaction_data):
+def build_transaction(transaction_data, organisation):
     transaction_id = str(transaction_data["transaction_id"])
     transaction_date = transaction_data["date"]
     transaction_value = transaction_data["value"]
@@ -130,6 +130,14 @@ def build_transaction(transaction_data):
 
     t.append(el_with_narrative("description", transaction_description))
 
+    if ((transaction_type == "1") and (sector_code in organisation.accounts_incoming_funds.keys())):
+        incoming_fund = organisation.accounts_incoming_funds[sector_code]
+        t_provider_org = el_with_narrative("provider-org", incoming_fund.organisationfunder.funding_org_name)
+        t_provider_org.set("ref", incoming_fund.organisationfunder.funding_org_ref)
+        t_provider_org.set("type", incoming_fund.organisationfunder.funding_org_type)
+        t_provider_org.set("provider-activity-id", incoming_fund.funding_org_activity_id)
+        t.append(t_provider_org)
+
     t_sector = el_with_narrative("sector", sector_name)
     t_sector.set("code", sector_code)
     t_sector.set("vocabulary", "99")
@@ -137,15 +145,15 @@ def build_transaction(transaction_data):
 
     return t
 
-def build_account(ia, account):
+def build_account(ia, account, organisation):
     transactions = []
     if 'aggregation' in account:
-        transactions = [build_transaction(aggregated_value)
+        transactions = [build_transaction(aggregated_value, organisation)
             for d, aggregated_value in
             account['aggregated_values'].items()]
 
     else:
-        transactions = [build_transaction(disaggregated_value)
+        transactions = [build_transaction(disaggregated_value, organisation)
             for disaggregated_value in
             account['disaggregated_values']]
 
@@ -154,9 +162,9 @@ def build_account(ia, account):
 
     return ia
 
-def build_accounts(ia, accounts):
+def build_accounts(ia, accounts, organisation):
     for account in accounts:
-        build_account(ia, account)
+        build_account(ia, account, organisation)
     return ia
 
 def build_period(el_i, period):
@@ -243,8 +251,13 @@ def build_activity(doc, activity, organisation):
     ia.append(el_with_narrative("title", activity['title']))
     ia.append(el_with_narrative("description", activity['description']))
 
-    # Participating orgs
-    for funder in organisation.funders:
+    # Participating orgs - can be specified per activity,
+    # otherwise all funders will be used
+    if db_activity.funders:
+        funders = db_activity.funders
+    else:
+        funders = organisation.funders
+    for funder in funders:
         ia.append(el_org("Funding", funder.funding_org_name,
                                     funder.funding_org_ref,
                                     funder.funding_org_type))
@@ -275,7 +288,7 @@ def build_activity(doc, activity, organisation):
     ia.append(el_with_code("default-aid-type", activity['aid_type']))
 
     # Transactions
-    ia = build_accounts(ia, activity['accounts'].values())
+    ia = build_accounts(ia, activity['accounts'].values(), organisation)
 
     #FIXME: Add documents
     #FIXME: Add conditions
