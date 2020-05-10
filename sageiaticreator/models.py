@@ -197,6 +197,8 @@ class OrgIncomingFunds(db.Model):
     account_number = sa.Column(sa.UnicodeText)
     funding_org_activity_id = sa.Column(sa.UnicodeText)
 
+    __table_args__ = (sa.UniqueConstraint('organisation_slug','account_number'),)
+
 
     @hybrid_property
     def organisationfunder_name(self):
