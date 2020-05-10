@@ -10,6 +10,7 @@
 <div role="tabpanel">
   <ul class="nav nav-tabs" role="tablist">
     <li role="presentation" class="active"><a href="#basic" aria-controls="basic" role="tab" data-toggle="tab">Basic</a></li>
+    <li role="presentation"><a href="#funding" aria-controls="funding" role="tab" data-toggle="tab">Funding</a></li>
     <li role="presentation"><a href="#results" aria-controls="results" role="tab" data-toggle="tab">Results</a></li>
   </ul>
   <div class="tab-content">
@@ -118,7 +119,24 @@
         </div>
       </form>
     </div>
-
+    <div role="tabpanel" class="tab-pane active" id="funding">
+      <h2>Funding data</h2>
+      <div class="alert alert-info" role="alert">
+        <p>Select organisations which fund this activity. You can specify additional funders on the <code>Funding orgs</code> tab of the <a href="{{url_for('organisations.organisation_edit', organisation_slug=organisation.organisation_slug)}}">organisation editor</a>.</p>
+        <p>If no organisations are selected, all funding organisations will be attached to this activity.</p>
+      </div>
+      <form class="form-horizontal" id="funders-form">
+        {% for funder in organisation.funders %}
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="{{ funder.id }}"
+          name="funders" {% if activity.id in funder.activity_ids %} checked{% endif %}>
+          <label class="form-check-label" for="defaultCheck1">
+            {{ funder.funding_org_name }}
+          </label>
+        </div>
+        {% endfor %}
+      </form>
+    </div>
 
     <!-- Results data -->
     <div role="tabpanel" class="tab-pane" id="results">
