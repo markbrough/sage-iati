@@ -1,4 +1,5 @@
 import sqlalchemy as sa
+from sqlalchemy.ext.hybrid import hybrid_property
 import functools as ft
 from sageiaticreator.extensions import db
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -11,6 +12,12 @@ cascade_relationship = ft.partial(
 act_ForeignKey = ft.partial(
     sa.ForeignKey,
     ondelete="CASCADE"
+)
+
+
+activity_organisationfunder_table = db.Table('activity_organisationfunder_table', db.metadata,
+    db.Column('organisationfunder_id', db.Integer, db.ForeignKey('organisationfunder.id')),
+    db.Column('activity_id', db.Integer, db.ForeignKey('activity.id'))
 )
 
 
@@ -32,6 +39,13 @@ class Organisation(db.Model):
     budgets = cascade_relationship("OrgBudget")
     expenditures = cascade_relationship("OrgExpenditure")
     documents = cascade_relationship("OrgDoc")
+    incoming_funds = cascade_relationship(
+        "OrgIncomingFunds",
+        backref="organisation")
+
+    @hybrid_property
+    def accounts_incoming_funds(self):
+        return dict(map(lambda _if: (_if.account_number, _if), self.incoming_funds))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -155,9 +169,44 @@ class OrgFunder(db.Model):
     funding_org_name = sa.Column(sa.UnicodeText)
     funding_org_ref = sa.Column(sa.UnicodeText)
     funding_org_type = sa.Column(sa.UnicodeText)
+    activities = sa.orm.relationship(
+        "Activity",
+        secondary=activity_organisationfunder_table,
+        back_populates="funders")
+    incoming_funds = sa.orm.relationship(
+        "OrgIncomingFunds",
+        backref="organisationfunder")
+
+    @hybrid_property
+    def activity_ids(self):
+        return list(map(lambda activity: activity.id, self.activities))
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
+class OrgIncomingFunds(db.Model):
+    __tablename__ = 'organisationfunder_incomingfunds'
+    id = sa.Column(sa.Integer, primary_key=True)
+    organisation_slug = sa.Column(
+            sa.ForeignKey('organisation.organisation_slug'),
+            nullable=False)
+    organisationfunder_id = sa.Column(
+            sa.ForeignKey('organisationfunder.id'),
+            nullable=False)
+    account_number = sa.Column(sa.UnicodeText)
+    funding_org_activity_id = sa.Column(sa.UnicodeText)
+
+
+    @hybrid_property
+    def organisationfunder_name(self):
+        return self.organisationfunder.funding_org_name
+
+    def as_dict(self):
+        ret = {c.name: getattr(self, c.name) for c in self.__table__.columns}
+        ret.update({'organisationfunder_name': self.organisationfunder_name})
+        return ret
+
 
 class OrgConvertedFile(db.Model):
     __tablename__ = 'organisationfile'
@@ -207,6 +256,10 @@ class Activity(db.Model):
     aid_type = sa.Column(sa.UnicodeText)
     activity_status = sa.Column(sa.UnicodeText)
     results = cascade_relationship("ActivityResult")
+    funders = sa.orm.relationship(
+        "OrgFunder",
+        secondary=activity_organisationfunder_table,
+        back_populates="activities")
 
     def as_dict(self):
        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
