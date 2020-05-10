@@ -135,7 +135,8 @@ def build_transaction(transaction_data, organisation):
         t_provider_org = el_with_narrative("provider-org", incoming_fund.organisationfunder.funding_org_name)
         t_provider_org.set("ref", incoming_fund.organisationfunder.funding_org_ref)
         t_provider_org.set("type", incoming_fund.organisationfunder.funding_org_type)
-        t_provider_org.set("provider-activity-id", incoming_fund.funding_org_activity_id)
+        if (incoming_fund.funding_org_activity_id != ""):
+            t_provider_org.set("provider-activity-id", incoming_fund.funding_org_activity_id)
         t.append(t_provider_org)
 
     t_sector = el_with_narrative("sector", sector_name)
