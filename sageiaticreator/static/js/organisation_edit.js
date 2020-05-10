@@ -13,6 +13,9 @@ function errorFormGroup(input) {
   $(input).after('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span> \
   <span class="sr-only form-control-status">(error)</span>');
 }
+$(document).on("input", "#funding_org_activity_id", function(e) {
+  $("#funding_org_activity_id_search").attr('href', `https://d-portal.org/q.html?aid=${e.target.value}`)
+})
 $("#addAggregateAccountBtn").click(function(e) {
   e.preventDefault();
   var account_number = $("#addAggregateAccountForm #account_number").val();
@@ -87,9 +90,55 @@ $("#addFunderBtn").click(function(e){
         </td> \
       </tr> \
     ');
+    $("#addIncomingFundsForm #organisationfunder_id").append(' \
+      <option value="' + data['id'] + '">' + data['funding_org_name'] + '</option>\
+      ')
     $('#addFunderModal').modal('hide');
   }).fail(function(){
     alert("Couldn't add funder!");
+  });
+});
+
+$("#addIncomingFundsBtn").click(function(e){
+  e.preventDefault();
+  var organisationfunder_id = $("#addIncomingFundsForm #organisationfunder_id").val();
+  var account_number = $("#addIncomingFundsForm #account_number").val();
+  var funding_org_activity_id = $("#addIncomingFundsForm #funding_org_activity_id").val();
+  data = {
+    'organisationfunder_id': organisationfunder_id,
+    'account_number': account_number,
+    'funding_org_activity_id': funding_org_activity_id
+  }
+  $.post("add_incoming_funds/", data, function(resultdata) {
+    var data = $.parseJSON(resultdata);
+    $("#incoming-funds-table tbody").append(' \
+      <tr data-incoming-funds-id="' + data['id'] + '"> \
+        <td>' + data['organisationfunder_name'] + '</td> \
+        <td>' + data['account_number'] + '</td> \
+        <td>' + data['funding_org_activity_id'] + '</td> \
+        <td> \
+          <a href="" class="deleteIncomingFundsBtn"> \
+            <span class="glyphicon glyphicon-trash"></span> \
+          </a> \
+        </td> \
+      </tr> \
+    ');
+    $('#addIncomingFundsModal').modal('hide');
+  }).fail(function(){
+    alert("Couldn't add incoming funds!");
+  });
+});
+
+$(document).on("click", ".deleteIncomingFundsBtn", function(e) {
+  e.preventDefault();
+  var btn = this;
+  var tr = $(btn).closest("tr");
+  var incoming_funds_id = $(tr).attr("data-incoming-funds-id");
+  var data = {'incoming_funds_id': incoming_funds_id};
+  $.post("delete_incoming_funds/", data, function(resultdata) {
+    $(tr).fadeOut();
+  }).fail(function() {
+    alert("Unable to delete that incoming funds entry!");
   });
 });
 
@@ -268,8 +317,9 @@ $(document).on("click", ".deleteFunderBtn", function(e) {
   var data = {'funder_id': funder_id};
   $.post("delete_funder/", data, function(resultdata) {
     $(tr).fadeOut();
+    $('#addIncomingFundsForm #organisationfunder_id option[value="'+funder_id+'"]').remove()
   }).fail(function() {
-    alert("Unable to delete that funder!");
+    alert("Unable to delete that funder! If there are incoming funds associated with this funder, you have to delete them first.");
   });
 });
 $(document).on("focus", "#org-data-form input", function(e) {
