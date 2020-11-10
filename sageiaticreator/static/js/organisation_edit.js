@@ -350,7 +350,7 @@ $(document).on("change", "#org-budget-form input", function(e) {
   var route = 'update_org_budgetline/';
   if (!id) {
     id = $(this).closest("tr").attr("data-budget-id");
-    route = 'update_org_budgetline/';
+    route = 'update_org_budget/';
   }
   data['id'] = id
   var input = this;
