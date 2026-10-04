@@ -100,7 +100,7 @@ def el_contact_info(organisation):
               organisation.organisation_contact_address))
     return ec
 
-def build_transaction(transaction_data, organisation):
+def build_transaction(transaction_data, organisation, activity_sector):
     transaction_id = str(transaction_data["transaction_id"])
     transaction_date = transaction_data["date"]
     transaction_value = transaction_data["value"]
@@ -128,7 +128,8 @@ def build_transaction(transaction_data, organisation):
     tvalue.text = '{:.2f}'.format(transaction_value)
     tvalue.set("value-date", transaction_date)
 
-    t.append(el_with_narrative("description", transaction_description))
+    if transaction_description and transaction_description.strip():
+        t.append(el_with_narrative("description", transaction_description))
 
     if ((transaction_type == "1") and (sector_code in organisation.accounts_incoming_funds.keys())):
         incoming_fund = organisation.accounts_incoming_funds[sector_code]
@@ -139,6 +140,11 @@ def build_transaction(transaction_data, organisation):
             t_provider_org.set("provider-activity-id", incoming_fund.funding_org_activity_id)
         t.append(t_provider_org)
 
+    # Sectors must be declared either at activity level or for all
+    # transactions, so the activity's DAC sector is repeated here
+    if activity_sector:
+        t.append(el_with_code("sector", activity_sector, "1"))
+
     t_sector = el_with_narrative("sector", sector_name)
     t_sector.set("code", sector_code)
     t_sector.set("vocabulary", "99")
@@ -146,15 +152,17 @@ def build_transaction(transaction_data, organisation):
 
     return t
 
-def build_account(ia, account, organisation):
+def build_account(ia, account, organisation, activity_sector):
     transactions = []
     if 'aggregation' in account:
-        transactions = [build_transaction(aggregated_value, organisation)
+        transactions = [build_transaction(aggregated_value, organisation,
+                                          activity_sector)
             for d, aggregated_value in
             account['aggregated_values'].items()]
 
     else:
-        transactions = [build_transaction(disaggregated_value, organisation)
+        transactions = [build_transaction(disaggregated_value, organisation,
+                                          activity_sector)
             for disaggregated_value in
             account['disaggregated_values']]
 
@@ -163,9 +171,9 @@ def build_account(ia, account, organisation):
 
     return ia
 
-def build_accounts(ia, accounts, organisation):
+def build_accounts(ia, accounts, organisation, activity_sector):
     for account in accounts:
-        build_account(ia, account, organisation)
+        build_account(ia, account, organisation, activity_sector)
     return ia
 
 def build_period(el_i, period):
@@ -179,15 +187,18 @@ def build_period(el_i, period):
     el_p.append(el_p_s)
     el_p_s.set("iso-date", date_isostring(p['period_end']))
 
-    el_target=el_with_attrib("target", "value", p['target_value'])
-    el_p.append(el_target)
-    if p.get('target_comment'):
-        el_target.append(el_with_narrative("comment", p['target_comment']))
+    # Only include target / actual when a value has been entered
+    if p.get('target_value'):
+        el_target=el_with_attrib("target", "value", p['target_value'])
+        el_p.append(el_target)
+        if p.get('target_comment'):
+            el_target.append(el_with_narrative("comment", p['target_comment']))
 
-    el_actual=el_with_attrib("actual", "value", p['actual_value'])
-    el_p.append(el_actual)
-    if p.get('actual_comment'):
-        el_actual.append(el_with_narrative("comment", p['actual_comment']))
+    if p.get('actual_value'):
+        el_actual=el_with_attrib("actual", "value", p['actual_value'])
+        el_p.append(el_actual)
+        if p.get('actual_comment'):
+            el_actual.append(el_with_narrative("comment", p['actual_comment']))
     return el_p
 
 def build_indicator(el_result, indicator):
@@ -226,7 +237,9 @@ def build_result(ia, result):
 
 def build_results(ia, results):
     for result in results:
-        build_result(ia, result)
+        # The IATI schema requires each result to have an indicator
+        if result.indicators:
+            build_result(ia, result)
     return ia
 
 def build_activity(doc, activity, organisation):
@@ -237,6 +250,8 @@ def build_activity(doc, activity, organisation):
 
     ia.set("last-updated-datetime", current_datetime())
     ia.set("default-currency", organisation.organisation_default_currency)
+    ia.set("{http://www.w3.org/XML/1998/namespace}lang",
+           organisation.organisation_default_language)
 
     o_name = organisation.organisation_name
     o_ref = organisation.organisation_ref
@@ -284,12 +299,19 @@ def build_activity(doc, activity, organisation):
     #FIXME: Add location
 
     # Classifications
-    ia.append(el_with_code("sector", activity['sector'], "1"))
+    # Transactions always carry a sector, so the activity sector is only
+    # declared here if there are no transactions
+    has_transactions = any(
+        account.get('aggregated_values') or account.get('disaggregated_values')
+        for account in activity['accounts'].values())
+    if not has_transactions:
+        ia.append(el_with_code("sector", activity['sector'], "1"))
     ia.append(el_with_code("default-flow-type", activity['flow_type']))
     ia.append(el_with_code("default-aid-type", activity['aid_type']))
 
     # Transactions
-    ia = build_accounts(ia, activity['accounts'].values(), organisation)
+    ia = build_accounts(ia, activity['accounts'].values(), organisation,
+                        activity['sector'] if has_transactions else None)
 
     #FIXME: Add documents
     #FIXME: Add conditions
@@ -307,6 +329,9 @@ def generate_iati_activity_data(jsondata, organisation_slug):
     organisation = siorganisation.get_org(organisation_slug)
 
     for activity_id, activity in jsondata['activities'].items():
+        # Skip activities that haven't been filled in (no code / title)
+        if not activity.get('code') or not activity.get('title'):
+            continue
         doc = build_activity(doc, activity, organisation)
 
     doc = et.ElementTree(doc)
@@ -361,7 +386,8 @@ def el_org_doc(document):
     el_d.set("url", document.url)
     el_d.set("format", document.format)
     el_d.append(el_with_narrative("title", document.title))
-    el_d.append(el_with_attrib("category", "code", document.category))
+    el_d.append(el_with_attrib("category", "code",
+                               document.category.strip().upper()))
     if document.date:
         el_d.append(el_with_attrib("document-date", "iso-date", str(document.date)))
     return el_d
